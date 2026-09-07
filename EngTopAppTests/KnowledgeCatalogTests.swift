@@ -55,6 +55,12 @@ final class KnowledgeCatalogTests: XCTestCase {
         XCTAssertTrue(questions.allSatisfy { $0.options.indices.contains($0.answer) && Set($0.options).count == $0.options.count })
     }
 
+    func testCuratedQuestionLookupUsesKnowledgePointID() {
+        let question = CuratedKnowledgeQuestions.all.first { $0.id == "j3-challenge-21" }
+        XCTAssertEqual(question?.knowledgePointID, "j3-perfect")
+        XCTAssertTrue(CuratedKnowledgeQuestions.forPoint("j3-perfect").contains { $0.id == question?.id })
+    }
+
     func testEveryPointHasAQuestionWithItsOwnExample() {
         for point in JuniorKnowledgeCatalog.all {
             let questions = KnowledgePracticeFactory.questions(for: point)
