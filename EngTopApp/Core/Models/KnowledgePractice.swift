@@ -12,6 +12,7 @@ struct KnowledgePracticeQuestion: Identifiable {
 enum KnowledgePracticeFactory {
     static func questions(for point: JuniorKnowledgePoint) -> [KnowledgePracticeQuestion] {
         let curated = CuratedKnowledgeQuestions.forPoint(point.id)
+        let guaranteed = curated.isEmpty ? [CuratedKnowledgeQuestions.coverageQuestion(for: point)] : []
         let peers = JuniorKnowledgeCatalog.all.filter { $0.stage == point.stage && $0.id != point.id }
         let distractors = Array(peers.prefix(3))
         let example = point.examples[0]
@@ -20,6 +21,6 @@ enum KnowledgePracticeFactory {
             KnowledgePracticeQuestion(id: point.id + "-meaning", knowledgePointID: point.id, prompt: "“\(point.title)”主要帮助你掌握什么？", options: [point.summary] + distractors.map(\.summary), answer: 0, explanation: "记住核心规则：\(point.summary)"),
             KnowledgePracticeQuestion(id: point.id + "-ability", knowledgePointID: point.id, prompt: "这个知识点主要训练哪项英语能力？", options: Ability.allCases.map(\.title), answer: Ability.allCases.firstIndex(of: point.ability) ?? 0, explanation: "它属于“\(point.ability.title)”能力。")
         ]
-        return Array((curated + generated).prefix(3))
+        return Array((curated + guaranteed + generated).prefix(3))
     }
 }

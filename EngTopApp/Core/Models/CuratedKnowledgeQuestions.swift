@@ -119,6 +119,14 @@ enum CuratedKnowledgeQuestions {
 
     static func forPoint(_ id: String) -> [KnowledgePracticeQuestion] { all.filter { $0.id.hasPrefix(id + "-") } }
 
+    static func coverageQuestion(for point: JuniorKnowledgePoint) -> KnowledgePracticeQuestion {
+        let example = point.examples.first ?? "Practice this sentence."
+        return KnowledgePracticeQuestion(id: point.id + "-coverage", knowledgePointID: point.id,
+            prompt: "关于“\(point.title)”，下面哪项示例正确？",
+            options: [example, "以上规则不需要看语境", "只要句子够长就一定正确", "中文意思相同即可"], answer: 0,
+            explanation: "\(point.summary) 示例：\(example)")
+    }
+
     private static func q(_ id: String, _ point: String, _ prompt: String, _ options: [String], _ answer: Int, _ explanation: String) -> KnowledgePracticeQuestion {
         KnowledgePracticeQuestion(id: id, knowledgePointID: id.split(separator: "-").dropLast().joined(separator: "-"), prompt: prompt, options: options, answer: answer, explanation: explanation)
     }
