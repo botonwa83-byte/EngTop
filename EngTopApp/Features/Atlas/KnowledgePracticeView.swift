@@ -14,7 +14,7 @@ struct KnowledgePracticeView: View {
             if index < questions.count {
                 let question = questions[index]
                 ProgressView(value: Double(index), total: Double(questions.count)).tint(.apexStarBlue)
-                Text("第 \(index + 1)/\(questions.count) 题").font(AppFont.caption).foregroundColor(.secondary)
+                HStack { Text("第 \(index + 1)/\(questions.count) 题").font(AppFont.caption).foregroundColor(.secondary); Spacer(); TagChip(text: question.kind, color: .apexMystery) }
                 Text(question.prompt).font(AppFont.sectionTitle)
                 ForEach(Array(question.options.enumerated()), id: \.offset) { option, text in
                     Button { answer(option, question) } label: {
