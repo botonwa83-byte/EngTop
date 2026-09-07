@@ -41,9 +41,23 @@ final class KnowledgeCatalogTests: XCTestCase {
     }
 
     func testCuratedQuestionsCoverMultipleStagesAndAbilities() {
-        XCTAssertGreaterThanOrEqual(CuratedKnowledgeQuestions.all.count, 40)
+        XCTAssertGreaterThanOrEqual(CuratedKnowledgeQuestions.all.count, 100)
         XCTAssertEqual(Set(CuratedKnowledgeQuestions.all.compactMap { question in
             JuniorKnowledgeCatalog.all.first { $0.id == question.knowledgePointID }?.stage
         }).count, 4)
+    }
+
+    func testCuratedQuestionsReferenceRealPointsAndHaveUniqueIDs() {
+        let pointIDs = Set(JuniorKnowledgeCatalog.all.map(\.id))
+        let questions = CuratedKnowledgeQuestions.all
+        XCTAssertEqual(Set(questions.map(\.id)).count, questions.count)
+        XCTAssertTrue(questions.allSatisfy { pointIDs.contains($0.knowledgePointID) })
+        XCTAssertTrue(questions.allSatisfy { $0.options.indices.contains($0.answer) && Set($0.options).count == $0.options.count })
+    }
+
+    func testEveryKnowledgePointHasACompleteLesson() {
+        let lessons = KnowledgeLessonCatalog.all()
+        XCTAssertEqual(lessons.count, JuniorKnowledgeCatalog.all.count)
+        XCTAssertTrue(lessons.allSatisfy { !$0.rule.isEmpty && !$0.example.isEmpty && !$0.trap.isEmpty && !$0.transfer.isEmpty })
     }
 }

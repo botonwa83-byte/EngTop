@@ -33,6 +33,7 @@
 		75158CED8158F1B095D10757 /* QuestionBank+Extended2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD9E70FFA1E70445AFF070C /* QuestionBank+Extended2.swift */; };
 		76EDF2E665674706D1C8A08D /* QuestionBank+Extended5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3BC0D42B301D0D08905068 /* QuestionBank+Extended5.swift */; };
 		770AB229E5C7A04909027B38 /* MockExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C4442351C5A5DA1DAAE3DA /* MockExamView.swift */; };
+		8380D00952B7BFB06FC66316 /* KnowledgeLesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457069600A9A5101441F054A /* KnowledgeLesson.swift */; };
 		8527F227383D182926C2CEC6 /* MainLineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D2718DC7F58F3D568FA82 /* MainLineData.swift */; };
 		86EED54F65B7B91169DCDC56 /* PromoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033B25579786C4619D6659EF /* PromoView.swift */; };
 		8A5B733CA4D1EBF44044F913 /* ContinuationWorkshopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C614C7260C69AF33C63F7D /* ContinuationWorkshopView.swift */; };
@@ -109,6 +110,7 @@
 		370730B8DF91A353DDFB184D /* VocabStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabStore.swift; sourceTree = "<group>"; };
 		4415AA6B570E56BFC9C92814 /* AtlasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasView.swift; sourceTree = "<group>"; };
 		4490F6005AE51FAD89564BA1 /* QuestionBank+Extended3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuestionBank+Extended3.swift"; sourceTree = "<group>"; };
+		457069600A9A5101441F054A /* KnowledgeLesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnowledgeLesson.swift; sourceTree = "<group>"; };
 		4781458E66980A8E3E6A7077 /* KnowledgeCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnowledgeCatalogTests.swift; sourceTree = "<group>"; };
 		50BDF7B32C75E4093B525A66 /* ListeningPlayerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningPlayerCard.swift; sourceTree = "<group>"; };
 		51840D7A706302729D79B24C /* CuratedKnowledgeQuestions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedKnowledgeQuestions.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				F9CCAFFB4A758414D52A4D67 /* EngContent.swift */,
 				2FFAE82E81E8EA70C554B0B8 /* HighFreqPoint.swift */,
 				14385F538D01A392873970E4 /* JuniorKnowledge.swift */,
+				457069600A9A5101441F054A /* KnowledgeLesson.swift */,
 				26B548B08B9682DDB63AFC76 /* KnowledgePractice.swift */,
 				AFB4CA81B4E590B62E24B00F /* VocabWord.swift */,
 			);
@@ -530,6 +533,7 @@
 				17EC12C4760FB8D41BE509FB /* HighFreqPoint.swift in Sources */,
 				F544F3FB0DFF7C1698C69E96 /* HighFreqView.swift in Sources */,
 				CA2637583A8167C7560A38B8 /* JuniorKnowledge.swift in Sources */,
+				8380D00952B7BFB06FC66316 /* KnowledgeLesson.swift in Sources */,
 				91BDFBF2296C1C50D10DBA44 /* KnowledgePractice.swift in Sources */,
 				BCDA5EA69E597CD9465F249F /* KnowledgePracticeView.swift in Sources */,
 				640EBA7074F6EB2FB94CC321 /* KnowledgeProgressStore.swift in Sources */,

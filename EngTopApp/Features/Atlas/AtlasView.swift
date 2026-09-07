@@ -163,6 +163,14 @@ struct KnowledgeDetailView: View {
                 HStack { TagChip(text: point.stage.title, color: .apexStarBlue); TagChip(text: point.ability.title, color: .apexMystery) }
                 Text(point.title).font(AppFont.sectionTitle)
                 Text(point.summary).font(AppFont.body).foregroundColor(.secondary)
+                let lesson = KnowledgeLessonCatalog.lesson(for: point)
+                VStack(alignment: .leading, spacing: Spacing.sm) {
+                    Label("核心规则", systemImage: "brain.head.profile").font(AppFont.cardTitle).foregroundColor(.apexStarBlue)
+                    Text(lesson.rule).font(AppFont.body)
+                    Text("示例：\(lesson.example)").font(AppFont.body).foregroundColor(.apexEmerald)
+                    Text("易错点：\(lesson.trap)").font(AppFont.caption).foregroundColor(.apexLava)
+                    Text("迁移任务：\(lesson.transfer)").font(AppFont.caption).foregroundColor(.secondary)
+                }.cardSurface(padding: Spacing.md)
                 VStack(alignment: .leading, spacing: Spacing.sm) {
                     Label("掌握方法", systemImage: "lightbulb.fill").font(AppFont.cardTitle).foregroundColor(.apexGold)
                     Text("先理解规则，再观察例句中的结构，最后用同一结构替换人物、动作或时间。")
