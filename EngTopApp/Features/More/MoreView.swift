@@ -4,6 +4,7 @@ import SwiftUI
 struct MoreView: View {
     @EnvironmentObject var store: EngStore
     @ObservedObject private var purchase = PurchaseManager.shared
+    @ObservedObject private var learningProgress = LearningProgressStore.shared
     @State private var showPaywall = false
 
     var body: some View {
@@ -57,6 +58,18 @@ struct MoreView: View {
                                     .padding(.horizontal, 7).padding(.vertical, 2)
                                     .background(Color.apexLava).clipShape(Capsule())
                             }
+                        }
+                    }
+                }
+
+                Section("学习能力") {
+                    NavigationLink { LearningGymView() } label: {
+                        HStack {
+                            Label("能力训练营", systemImage: "figure.mind.and.body")
+                            Spacer()
+                            Text("\(learningProgress.completedMissionCount)/\(LearningMissionCatalog.all.count)")
+                                .font(AppFont.chip)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }

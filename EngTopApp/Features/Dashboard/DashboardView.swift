@@ -5,6 +5,7 @@ struct DashboardView: View {
     @EnvironmentObject var store: EngStore
     @EnvironmentObject var purchase: PurchaseManager
     @ObservedObject private var daily = DailyManager.shared
+    @ObservedObject private var learningProgress = LearningProgressStore.shared
     @State private var showPaywall = false
 
     var body: some View {
@@ -14,8 +15,10 @@ struct DashboardView: View {
                     welcomeHeader
                     gravityChallenge
                     dailyKnowledge
+                    learningMissionCard
                     planCard
                     abilitySection
+                    learningAbilitySection
                     estimatorCard
                     sniperCard
                     reviewCard
@@ -26,7 +29,7 @@ struct DashboardView: View {
                 .readableWidth()
             }
             .background(Color.apexBackground.ignoresSafeArea())
-            .navigationTitle("能力驾驶舱")
+        .navigationTitle("提分决策力 · 驾驶舱")
         }
         .sheet(isPresented: $showPaywall) { PaywallView() }
     }
@@ -87,6 +90,42 @@ struct DashboardView: View {
         .buttonStyle(.plain)
     }
 
+    private var learningMissionCard: some View {
+        let mission = learningProgress.recommendedMission
+        return NavigationLink {
+            LearningMissionView(mission: mission)
+        } label: {
+            HStack(spacing: Spacing.md) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: Radius.inner)
+                        .fill(Color.apexMystery.opacity(0.16))
+                        .frame(width: 56, height: 56)
+                    Image(systemName: mission.ability.systemImage)
+                        .font(.title2)
+                        .foregroundColor(.apexMystery)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 6) {
+                        Text("今日能力任务").font(AppFont.cardTitle)
+                        TagChip(text: mission.ability.title, color: .apexMystery)
+                    }
+                    Text(mission.title).font(AppFont.body)
+                    Text("练习 \(mission.subtitle)，完成后记录一次迁移和反思")
+                        .font(AppFont.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .cardSurface(padding: Spacing.md)
+        }
+        .buttonStyle(.plain)
+    }
+
     private var abilitySection: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             SectionHeader(title: "能力雷达", systemImage: "dot.radiowaves.left.and.right", accent: .apexStarBlue)
@@ -101,6 +140,54 @@ struct DashboardView: View {
             }
         }
         .cardSurface(padding: Spacing.md)
+    }
+
+    private var learningAbilitySection: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            HStack {
+                SectionHeader(title: "学习能力成长", systemImage: "circle.hexagongrid.fill", accent: .apexMystery)
+                NavigationLink {
+                    LearningGymView()
+                } label: {
+                    Image(systemName: "arrow.up.right")
+                        .font(AppFont.caption)
+                        .foregroundColor(.apexMystery)
+                }
+                .accessibilityLabel("打开能力训练营")
+            }
+            Text("能力训练不止是答对：理解、推理、迁移和反思都会留下成长记录。")
+                .font(AppFont.caption)
+                .foregroundColor(.secondary)
+            ForEach(LearningAbility.allCases) { ability in
+                let score = learningProgress.score(for: ability)
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: ability.systemImage)
+                        .foregroundColor(learningColor(for: ability))
+                        .frame(width: 22)
+                    Text(ability.title).font(AppFont.body)
+                    ProgressView(value: Double(score), total: 100)
+                        .tint(learningColor(for: ability))
+                    Text("\(score)").font(AppFont.caption)
+                        .foregroundColor(.secondary)
+                        .frame(width: 28, alignment: .trailing)
+                }
+            }
+            Text("已完成 \(learningProgress.completedMissionCount)/\(LearningMissionCatalog.all.count) 项真实情境任务")
+                .font(AppFont.chip)
+                .foregroundColor(.secondary)
+        }
+        .cardSurface(padding: Spacing.md)
+    }
+
+    private func learningColor(for ability: LearningAbility) -> Color {
+        switch ability {
+        case .information: return .apexStarBlue
+        case .reasoning: return .apexMystery
+        case .transfer: return .apexEmerald
+        case .expression: return .apexLava
+        case .planning: return .apexGold
+        case .reflection: return .apexDanger
+        }
     }
 
     private func icon(for ability: Ability) -> String {
