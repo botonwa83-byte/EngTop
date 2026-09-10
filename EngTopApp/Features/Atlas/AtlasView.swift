@@ -194,9 +194,11 @@ struct KnowledgeDetailView: View {
                     Text("不要只背中文意思。检查主语、动词形式、词序和时间标志是否互相匹配。")
                         .font(AppFont.body).foregroundColor(.secondary)
                 }.cardSurface(padding: Spacing.md)
-                NavigationLink("开始 3 题专项练习") { KnowledgePracticeView(point: point) }
+                let practiceCount = KnowledgePracticeFactory.questions(for: point).count
+                NavigationLink("开始专项练习（\(practiceCount) 题）") { KnowledgePracticeView(point: point) }
                     .font(AppFont.cardTitle).foregroundColor(.white).frame(maxWidth: .infinity).padding(Spacing.md)
-                    .background(Color.apexStarBlue).cornerRadius(Radius.inner)
+                    .background(practiceCount > 0 ? Color.apexStarBlue : Color.secondary).cornerRadius(Radius.inner)
+                    .disabled(practiceCount == 0)
             }.padding(Spacing.lg)
         }.background(Color.apexBackground.ignoresSafeArea()).navigationTitle("知识点")
     }

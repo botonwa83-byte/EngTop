@@ -6,15 +6,26 @@ struct KnowledgePracticeView: View {
     @State private var index = 0
     @State private var selected: Int?
     @State private var correctCount = 0
+    @State private var batch = 0
 
-    private var questions: [KnowledgePracticeQuestion] { KnowledgePracticeFactory.questions(for: point) }
+    private var allQuestions: [KnowledgePracticeQuestion] { KnowledgePracticeFactory.questions(for: point) }
+    private var batchSize: Int { KnowledgePracticeFactory.batchSize }
+    private var questions: [KnowledgePracticeQuestion] { Array(allQuestions.dropFirst(batch * batchSize).prefix(batchSize)) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.lg) {
-            if index < questions.count {
+            if allQuestions.isEmpty {
+                Spacer()
+                VStack(spacing: Spacing.md) {
+                    Image(systemName: "books.vertical").font(.system(size: 48)).foregroundColor(.apexGold)
+                    Text("该知识点暂无固定练习").font(AppFont.sectionTitle)
+                    Text("题库正在整理，请先选择已有题目的知识点。").font(AppFont.body).foregroundColor(.secondary).multilineTextAlignment(.center)
+                }.frame(maxWidth: .infinity)
+                Spacer()
+            } else if index < questions.count {
                 let question = questions[index]
                 ProgressView(value: Double(index), total: Double(questions.count)).tint(.apexStarBlue)
-                HStack { Text("第 \(index + 1)/\(questions.count) 题").font(AppFont.caption).foregroundColor(.secondary); Spacer(); TagChip(text: question.kind, color: .apexMystery) }
+                HStack { Text("第 \(index + 1)/\(questions.count) 题 · 第 \(batch + 1) 批").font(AppFont.caption).foregroundColor(.secondary); Spacer(); TagChip(text: question.kind, color: .apexMystery) }
                 Text(question.prompt).font(AppFont.sectionTitle)
                 ForEach(Array(question.options.enumerated()), id: \.offset) { option, text in
                     Button { answer(option, question) } label: {
@@ -29,7 +40,10 @@ struct KnowledgePracticeView: View {
                 }
                 if selected != nil {
                     Text(question.explanation).font(AppFont.body).foregroundColor(.secondary).cardSurface(padding: Spacing.md)
-                    Button(index == questions.count - 1 ? "查看结果" : "下一题") { index += 1; selected = nil }
+                    Button(index == questions.count - 1 ? (batch + 1) * batchSize < allQuestions.count ? "进入下一批" : "查看结果" : "下一题") {
+                        if index == questions.count - 1 && (batch + 1) * batchSize < allQuestions.count { batch += 1; index = 0; correctCount = 0 } else { index += 1 }
+                        selected = nil
+                    }
                         .font(AppFont.cardTitle).foregroundColor(.white).frame(maxWidth: .infinity).padding(Spacing.md)
                         .background(Color.apexStarBlue).cornerRadius(Radius.inner)
                 }

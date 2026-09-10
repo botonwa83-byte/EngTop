@@ -14,6 +14,8 @@ struct Question: Identifiable, Codable, Equatable {
     let strategy: [String]    // 解题决策树步骤
     let trap: String          // 高频陷阱
     let difficulty: Double    // 0...1，0.3 易 / 0.6 中 / 0.85 难
+    /// 可核实的题目来源（年份/地区/卷型）。只有能对得上出处的题才填，绝不臆造；var 是为了让带默认值的字段能被合成的逐成员初始化器覆盖。
+    var source: String? = nil
 
     var difficultyLabel: String {
         switch difficulty {

@@ -31,10 +31,10 @@ final class KnowledgeCatalogTests: XCTestCase {
         XCTAssertTrue(results.allSatisfy { $0.stage == .juniorThree && $0.ability == .tense })
     }
 
-    func testEveryKnowledgePointGeneratesThreeValidQuestions() {
+    func testEveryKnowledgePointGeneratesTwentyValidQuestions() {
         for point in JuniorKnowledgeCatalog.all {
             let questions = KnowledgePracticeFactory.questions(for: point)
-            XCTAssertEqual(questions.count, 3)
+            XCTAssertEqual(questions.count, 20)
             XCTAssertTrue(questions.allSatisfy { !$0.options.isEmpty && $0.options.indices.contains($0.answer) })
             XCTAssertTrue(questions.allSatisfy { $0.knowledgePointID == point.id })
         }
