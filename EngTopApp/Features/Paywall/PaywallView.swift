@@ -1,5 +1,19 @@
 import SwiftUI
 
+struct PremiumModule: Identifiable, Hashable {
+    let id: String; let title: String; let pitch: String; let icon: String; let knowledgePointIDs: [String]
+    static let all = [
+        PremiumModule(id: "grammar", title: "高阶语法与长难句", pitch: "覆盖时态、语态、非谓语、从句、句型与词法", icon: "text.book.closed", knowledgePointIDs: ids(abilities: [.tense, .wordOrder, .expression, .vocabulary])),
+        PremiumModule(id: "continuation", title: "读后续写工坊", pitch: "情节链、事件顺序、阅读推断与高分句式迁移", icon: "pencil.and.scribble", knowledgePointIDs: ids(abilities: [.reading, .expression], stage: .juniorThree)),
+        PremiumModule(id: "writing", title: "应用文写作工坊", pitch: "邮件、邀请、建议、感谢、道歉、通知与观点表达", icon: "envelope", knowledgePointIDs: ids(abilities: [.expression], stage: .juniorThree)),
+        PremiumModule(id: "listening", title: "听力与场景专项", pitch: "课堂、校园、购物、问路、电话、时间数字与计划", icon: "ear", knowledgePointIDs: ids(abilities: [.listening, .vocabulary], stages: [.primary, .juniorOne, .juniorThree])),
+        PremiumModule(id: "mock", title: "模考与提分报告", pitch: "完整模考、错因诊断和薄弱考点排序", icon: "chart.bar.xaxis", knowledgePointIDs: JuniorKnowledgeCatalog.all.map(\.id))
+    ]
+    private static func ids(abilities: [Ability], stage: StudyStage? = nil, stages: [StudyStage] = StudyStage.allCases) -> [String] {
+        JuniorKnowledgeCatalog.all.filter { abilities.contains($0.ability) && (stage == nil ? stages.contains($0.stage) : $0.stage == stage!) }.map(\.id)
+    }
+}
+
 // MARK: - 完整功能解锁付费墙（移植自 PhysicsApex）
 
 struct PaywallView: View {
@@ -14,6 +28,10 @@ struct PaywallView: View {
                 heroArea
 
                 VStack(alignment: .leading, spacing: 14) {
+                    Text("五大模块一次解锁").font(.headline).padding(.bottom, 2)
+                    ForEach(PremiumModule.all) { module in
+                        benefitRow(icon: module.icon, color: .apexStarBlue, title: module.title, desc: module.pitch)
+                    }
                     benefitRow(icon: "book.fill", color: .apexStarBlue,
                                title: "解锁阅读理解关 · 37.5 分主战场",
                                desc: "细节/主旨/推理/词义猜测四题型定位策略，权重最大的模块系统打")
