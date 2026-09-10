@@ -47,9 +47,9 @@ struct PromoView: View {
                     .padding(.top, 48)
 
                     VStack(spacing: 10) {
-                        Text("不只是刷题——它算得出你下一个 +5 分在哪")
+                        Text("赋予学生一项能力：提分决策力")
                             .font(.system(size: 18, weight: .bold)).multilineTextAlignment(.center).foregroundColor(.white)
-                        Text("把英语能力 150 分拆开建模，用算法导航\n按提分性价比，带你用最短路径冲高分")
+                        Text("把英语能力 150 分拆开建模，用算法导航\n知道每道题怎么想、先练什么、下一分在哪里")
                             .font(.system(size: 13)).multilineTextAlignment(.center).foregroundColor(.white.opacity(0.6)).lineSpacing(4)
                     }
                     .padding(.top, 28).padding(.horizontal, 24)
@@ -104,6 +104,7 @@ struct PromoView: View {
                     .padding(.top, 24).padding(.horizontal, 24)
 
                     VStack(spacing: 4) {
+                        Text("学习能力闭环：识别考点 → 选择策略 → 输出答案 → 复盘提分").font(.system(size: 12)).foregroundColor(.apexEmerald)
                         Text("EngTop · 英语登顶  v1.0.0").font(.system(size: 12)).foregroundColor(.white.opacity(0.5))
                         Text("© 2026 Top King. All rights reserved.").font(.system(size: 11)).foregroundColor(.white.opacity(0.35))
                     }

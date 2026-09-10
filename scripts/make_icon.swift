@@ -1,4 +1,4 @@
-// EngApex 应用图标生成器
+// EngTop 应用图标生成器
 // 蓝→翠绿品牌渐变（对齐 PromoView Logo）+ 居中白色学士帽符号。无文字、无黑底。
 // 用法：swift scripts/make_icon.swift  → 覆盖 AppIcon-1024.png
 import AppKit
@@ -42,6 +42,6 @@ canvas.unlockFocus()
 guard let tiff = canvas.tiffRepresentation,
       let rep = NSBitmapImageRep(data: tiff),
       let png = rep.representation(using: .png, properties: [:]) else { fatalError("png") }
-let out = "EngApex/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
+let out = "EngTopApp/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
 try! png.write(to: URL(fileURLWithPath: out))
 print("✅ wrote \(out)")
