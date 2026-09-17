@@ -4,7 +4,7 @@ import Foundation
 /// 套卷一~五维持三期扩充后的固定分割不变，套卷六是这批新题整体打包成的第 6 套(见 QuestionBank.paper6)。
 extension QuestionBank {
 
-    static let extended8: [Question] = grammarFill8 + cloze8 + sevenChoose8 + reading8 + reading8Part2 + applied8 + continuation8 + listening8b + listening9b
+    static let extended8: [Question] = grammarFill8 + cloze8 + sevenChoose8 + reading8 + reading8Part2 + applied8 + continuation8 + listening8b + listening9b + paper6Supplement
 
     /// 套卷六的固定题目集合：就是这批新增题目本身，按真实考场顺序排列。
     static let paper6: [Question] = extended8.sorted { $0.module.examOrderIndex < $1.module.examOrderIndex }

@@ -218,7 +218,7 @@ final class ScoreEngineTests: XCTestCase {
 
     func testListeningQuestionsHaveScript() {
         let listening = QuestionBank.all.filter { $0.module == .listening }
-        XCTAssertEqual(listening.count, 58)
+        XCTAssertEqual(listening.count, 68, "听力题含第四轮补题的 10 道（含听力原文）")
         for q in listening {
             XCTAssertNotNil(q.listeningScript, "听力题 \(q.id) 缺听力原文")
             XCTAssertFalse(q.listeningScript?.isEmpty ?? true, "听力题 \(q.id) 听力原文为空")
