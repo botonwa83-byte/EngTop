@@ -59,9 +59,13 @@ struct HighFreqView: View {
                 Text("\(Int(p.frequencyWeight * 100))%").font(AppFont.chip).foregroundColor(.secondary)
             }
             Text(p.digest).font(AppFont.body).fixedSize(horizontal: false, vertical: true)
-            Text(p.example).font(AppFont.caption).foregroundColor(.secondary)
-                .padding(Spacing.sm).frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.apexBackground).cornerRadius(Radius.chip)
+            HStack(alignment: .top, spacing: Spacing.sm) {
+                Text(p.example).font(AppFont.caption).foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                PronounceButton(text: p.example, englishOnly: true)
+            }
+            .padding(Spacing.sm).frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.apexBackground).cornerRadius(Radius.chip)
             HStack {
                 if let levelId = p.linkedLevelId, let level = MainLineData.level(id: levelId) {
                     NavigationLink { QuizView(level: level) } label: {

@@ -1,39 +1,72 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EngApex 英语登顶</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EngTop 英语登顶</title>
 <style>
-  :root { --accent:#0fb9a6; --ink:#1c2530; --muted:#6b7785; --bg:#f6f8fa; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;
-         color:var(--ink); background:var(--bg); line-height:1.7; }
-  .wrap { max-width:720px; margin:0 auto; padding:48px 20px 64px; }
-  header { text-align:center; margin-bottom:40px; }
-  h1 { font-size:30px; margin:8px 0 6px; }
-  .tag { color:var(--muted); font-size:15px; }
-  .links { display:flex; flex-direction:column; gap:14px; margin-top:32px; }
-  a.card { display:block; padding:18px 20px; background:#fff; border-radius:14px; text-decoration:none;
-           color:var(--ink); box-shadow:0 2px 10px rgba(0,0,0,.05); border:1px solid #eef1f4; transition:.15s; }
-  a.card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.08); }
-  a.card .t { font-weight:700; }
-  a.card .d { color:var(--muted); font-size:14px; margin-top:2px; }
-  footer { text-align:center; color:var(--muted); font-size:13px; margin-top:48px; }
+  :root { --brand:#4a6cf7; --ink:#1d1d1f; --muted:#6e6e73; --bg:#fbfbfd; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; }
+  header { background:linear-gradient(135deg,#4a6cf7,#7b5cf0); color:#fff; padding:56px 24px 44px; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 24px; }
+  header .wrap { padding:0; }
+  h1 { margin:0 0 10px; font-size:34px; letter-spacing:-.5px; }
+  header p { margin:0; opacity:.92; font-size:17px; }
+  main { padding:36px 24px 60px; }
+  h2 { font-size:20px; margin:32px 0 12px; }
+  ul { padding-left:20px; margin:0 0 12px; }
+  li { margin:4px 0; }
+  .card { background:#fff; border-radius:14px; padding:20px 22px; box-shadow:0 1px 3px rgba(0,0,0,.06); margin-bottom:16px; }
+  .price { font-size:15px; color:var(--muted); }
+  a { color:var(--brand); }
+  footer { border-top:1px solid #e5e5ea; padding:24px; color:var(--muted); font-size:14px; }
+  footer .wrap { display:flex; gap:18px; flex-wrap:wrap; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>EngApex · 英语登顶</h1>
-    <div class="tag">算得出你下一个 +5 分在哪 — 用算法导航，冲刺高考英语高分</div>
-  </header>
-  <div class="links">
-    <a class="card" href="privacy.html"><div class="t">隐私政策</div><div class="d">我们如何处理你的数据（结论：不收集任何个人信息）</div></a>
-    <a class="card" href="terms.html"><div class="t">用户协议</div><div class="d">最终用户许可协议（EULA）</div></a>
-    <a class="card" href="support.html"><div class="t">技术支持</div><div class="d">常见问题与联系方式</div></a>
+<header>
+  <div class="wrap">
+    <h1>EngTop 英语登顶</h1>
+    <p>主线七关 · 提分雷达 · 错因诊断。不只告诉你错了，还告诉你分丢在哪、下一步先打哪一关。</p>
   </div>
-  <footer>EngApex © 2026</footer>
-</div>
+</header>
+<main class="wrap">
+  <div class="card">
+    <h2>主线七关</h2>
+    <ul>
+      <li>L1 语法的骨架（语法填空）· L2 完形逻辑链 · L3 七选五衔接（前三关永久免费）</li>
+      <li>L4 阅读理解 · L5 应用文写作 · L6 读后续写 · L7 听力抓取</li>
+      <li>每关含得分点模型讲解 + 配套题 + 即时诊断</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>三件真正有用的工具</h2>
+    <ul>
+      <li>提分雷达：按「规则强度 × 你的失分」推荐先打哪一关，而不是按题号顺序刷</li>
+      <li>错因诊断：把错误归到四类根因，给出对应建议</li>
+      <li>两个工坊：读后续写工坊、应用文工坊，含句式弹药库与写作教练</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>免费与付费</h2>
+    <p class="price">
+      免费：主线前 3 关、提分驾驶舱、估分器、提分雷达、考点图谱、句式库、词汇专项、错题本、能力训练营，永久免费；两个工坊每个体裁/主题第 1 个场景可免费预览。<br>
+      完整版 ¥22 一次性买断（非消耗型内购 <code>com.engtopapp.app.full_unlock</code>）：主线七关全开、工坊全场景与写作教练。无订阅、无续费，支持换机「恢复购买」。
+    </p>
+  </div>
+  <div class="card">
+    <h2>数据</h2>
+    <p class="price">EngTop 完全离线运行，不收集任何个人信息，学习记录只保存在你的设备上。详见<a href="privacy.html">隐私政策</a>。</p>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <a href="privacy.html">隐私政策</a>
+    <a href="terms.html">用户协议</a>
+    <a href="support.html">技术支持</a>
+    <span>© 2026 EngTop</span>
+  </div>
+</footer>
 </body>
 </html>

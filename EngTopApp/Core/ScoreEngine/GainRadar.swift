@@ -11,7 +11,7 @@ struct GainOpportunity: Identifiable {
     var id: String { module.id }
 }
 
-/// 提分雷达：EngApex 的最大创新点。
+/// 提分雷达：EngTop 的最大创新点。
 /// 对每个模块计算"边际提分 ROI"，把用户永远导向性价比最高的那 +5 分。
 ///
 ///   ROI = (失分空间 × 可提升概率 × 高考权重) ÷ 投入时间

@@ -1,166 +1,180 @@
 import SwiftUI
 
-/// 语言素材库（图鉴 Tab）：静态知识统一索引——词汇 + 句式/词块库，与"提分驾驶舱"(算法日计划)、
-/// "题型靶场"(限时刷题)、两个写作工坊(长文写作+教练)各自分工，不再重复模块掌握度展示。
+/// 素材库（索引页）：只做"找东西"这一件事——顶部统一检索，下面四个库的入口与进度。
+/// 各库的全量条目各自在独立子页滚动，首页不再堆上千条列表（学生翻页累的根因）。
 struct AtlasView: View {
     @ObservedObject private var vocabStore = VocabStore.shared
     @ObservedObject private var knowledgeProgress = KnowledgeProgressStore.shared
-    @State private var selectedStage: StudyStage? = nil
-    @State private var selectedAbility: Ability? = nil
-    @State private var searchText = ""
+    @ObservedObject private var methodStore = StudyMethodStore.shared
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: Spacing.xl) {
+                VStack(alignment: .leading, spacing: Spacing.lg) {
+                    searchEntry
                     knowledgeSummary
-                    vocabLibrary
-                    knowledgeLibrary
-                    phraseLibrary
+                    methodSummary
+                    libraryGrid
+                    WordPulsePromoCard()
                 }
                 .padding(Spacing.lg)
                 .readableWidth()
             }
             .background(Color.apexBackground.ignoresSafeArea())
-            .navigationTitle("语言素材库")
-            .searchable(text: $searchText, prompt: "搜索语法、词汇或例句")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button("全部学段") { selectedStage = nil }
-                        ForEach(StudyStage.allCases) { stage in
-                            Button(stage.title) { selectedStage = stage }
-                        }
-                        Divider()
-                        Button("全部能力") { selectedAbility = nil }
-                        ForEach(Ability.allCases) { ability in
-                            Button(ability.title) { selectedAbility = ability }
-                        }
-                    } label: { Image(systemName: "line.3.horizontal.decrease.circle") }
-                }
-            }
+            .navigationTitle("素材库")
         }
     }
+
+    // MARK: 统一检索入口
+
+    private var searchEntry: some View {
+        NavigationLink { LibrarySearchView() } label: {
+            HStack(spacing: Spacing.sm) {
+                Image(systemName: "magnifyingglass").foregroundColor(.secondary)
+                Text("搜单词、句式、知识点").font(AppFont.body).foregroundColor(.secondary)
+                Spacer()
+                Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
+            }
+            .padding(.vertical, Spacing.md).padding(.horizontal, Spacing.md)
+            .background(Color.apexCardSurface)
+            .cornerRadius(Radius.inner)
+            .overlay(RoundedRectangle(cornerRadius: Radius.inner).stroke(Color.secondary.opacity(0.18)))
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: 图谱总进度
 
     private var knowledgeSummary: some View {
         let total = JuniorKnowledgeCatalog.all.count
         let done = knowledgeProgress.mastered.count
+        let touched = knowledgeProgress.touchedCount
         return VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("英语知识图谱").font(AppFont.cardTitle)
-                    Text("小学至初三 · \(total) 个核心知识点").font(AppFont.caption).foregroundColor(.secondary)
+                    Text("小学至初三 · \(total) 个核心知识点 · 已练 \(touched) 个").font(AppFont.caption).foregroundColor(.secondary)
                 }
                 Spacer()
-                Text("\(done)/\(total)").font(AppFont.bigStat(24)).foregroundColor(.apexStarBlue)
+                Text("\(touched)/\(total)").font(AppFont.bigStat(24)).foregroundColor(.apexStarBlue)
             }
-            ProgressView(value: Double(done), total: Double(max(total, 1))).tint(.apexEmerald)
+            ProgressView(value: Double(touched), total: Double(max(total, 1))).tint(.apexEmerald)
+            Text("已掌握 \(done) 个（自己确认） · 练过即计入进度")
+                .font(AppFont.chip).foregroundColor(.secondary)
         }.cardSurface(padding: Spacing.md)
     }
 
-    private var knowledgeLibrary: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            SectionHeader(title: "小学 · 初中知识图谱", systemImage: "map", accent: .apexStarBlue)
-            ForEach(selectedStage.map { [$0] } ?? Array(StudyStage.allCases)) { stage in
-                let points = JuniorKnowledgeCatalog.points(stage: stage, ability: selectedAbility, query: searchText)
-                if !points.isEmpty {
-                HStack {
-                    Text(stage.title).font(AppFont.cardTitle)
-                    Spacer()
-                    Text("\(points.count) 个知识点").font(AppFont.caption).foregroundColor(.secondary)
-                }
-                ForEach(points) { point in
-                    NavigationLink { KnowledgeDetailView(point: point) } label: {
-                    HStack(alignment: .top, spacing: Spacing.sm) {
-                        Image(systemName: "circle.fill").font(.system(size: 7)).foregroundColor(.apexStarBlue).padding(.top, 6)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(point.title).font(AppFont.body)
-                            Text(point.summary).font(AppFont.caption).foregroundColor(.secondary)
-                        }
-                        Spacer()
-                        TagChip(text: point.ability.title, color: .apexMystery)
-                    }
-                    }.buttonStyle(.plain)
-                }
-                }
-            }
-        }
-        .cardSurface()
+    // MARK: 学习方法进度
+
+    private var methodSummary: some View {
+        NavigationLink { StudyMethodLibraryView() } label: { methodSummaryCard }
+            .buttonStyle(.plain)
     }
 
-    // MARK: 词汇
+    private var methodSummaryCard: some View {
+        let practiced = methodStore.practicedMethodCount
+        let total = StudyMethod.allCases.count
+        return VStack(alignment: .leading, spacing: Spacing.sm) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("英语学习方法").font(AppFont.cardTitle)
+                    Text("\(total) 个四步方法 · 已练 \(practiced) 个 · 方法题作答 \(methodStore.totalAttempts) 次")
+                        .font(AppFont.caption).foregroundColor(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
+            }
+            Text("先学方法，再用方法做题：每个知识点都绑定了一个可迁移的方法。")
+                .font(AppFont.chip).foregroundColor(.apexGold)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cardSurface(padding: Spacing.md)
+    }
 
-    private var vocabLibrary: some View {
+    // MARK: 四个库入口
+
+    private var libraryGrid: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
-            SectionHeader(title: "词汇", systemImage: "character.book.closed", accent: .apexLava)
-            Text("拼写 / 搭配辨析 / 熟词僻义三种练法；高频且你最弱的词永远排最前。").font(AppFont.caption).foregroundColor(.secondary)
-            ForEach(Array(vocabStore.priorityList(VocabData.all).enumerated()), id: \.element.word.id) { idx, entry in
-                NavigationLink { VocabDetailView(word: entry.word) } label: {
-                    vocabRow(rank: idx + 1, word: entry.word)
+            SectionHeader(title: "五个库", systemImage: "square.grid.2x2", accent: .apexStarBlue)
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: Spacing.md),
+                                GridItem(.flexible(), spacing: Spacing.md)], spacing: Spacing.md) {
+                NavigationLink { StudyMethodLibraryView() } label: {
+                    LibraryEntryCard(icon: "lightbulb.max", color: .apexGold,
+                                     title: "学习方法",
+                                     detail: "\(StudyMethod.allCases.count) 个方法",
+                                     footnote: "四步动作 · 可迁移")
+                }.buttonStyle(.plain)
+
+                NavigationLink { WordBankView() } label: {
+                    LibraryEntryCard(icon: "text.book.closed", color: .apexStarBlue,
+                                     title: "重点词汇 500",
+                                     detail: "小学 200 · 初中 300",
+                                     footnote: "带音标与例句")
+                }.buttonStyle(.plain)
+
+                NavigationLink { VocabLibraryView() } label: {
+                    LibraryEntryCard(icon: "character.book.closed", color: .apexLava,
+                                     title: "词汇专项",
+                                     detail: "\(VocabData.all.count) 词",
+                                     footnote: "已掌握 \(vocabStore.mastered.count)")
+                }.buttonStyle(.plain)
+
+                NavigationLink { KnowledgeLibraryView() } label: {
+                    LibraryEntryCard(icon: "map", color: .apexMystery,
+                                     title: "语法知识点",
+                                     detail: "\(JuniorKnowledgeCatalog.all.count) 个",
+                                     footnote: "已练 \(knowledgeProgress.touchedCount) · 已掌握 \(knowledgeProgress.mastered.count)")
+                }.buttonStyle(.plain)
+
+                NavigationLink { PhraseLibraryView() } label: {
+                    LibraryEntryCard(icon: "text.quote", color: .apexEmerald,
+                                     title: "句式 / 词块",
+                                     detail: "\(PhraseBook.all.count) 条",
+                                     footnote: "续写 · 应用文弹药")
                 }.buttonStyle(.plain)
             }
         }
-        .cardSurface()
     }
+}
 
-    private func vocabRow(rank: Int, word: VocabWord) -> some View {
-        let mastered = vocabStore.isMastered(word.id)
-        return HStack(spacing: Spacing.md) {
-            Text("\(rank)").font(AppFont.bigStat(20)).foregroundColor(.apexLava).frame(width: 26)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 6) {
-                    Text(word.headword).font(AppFont.cardTitle)
-                    TagChip(text: word.category.title, color: word.category == .collocation ? .apexStarBlue : .apexMystery)
-                }
-                Text(word.meaning).font(AppFont.caption).foregroundColor(.secondary).lineLimit(1)
+/// 素材库入口卡：图标 + 名称 + 规模 + 一行补充信息。
+struct LibraryEntryCard: View {
+    let icon: String
+    let color: Color
+    let title: String
+    let detail: String
+    let footnote: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            ZStack {
+                RoundedRectangle(cornerRadius: Radius.inner).fill(color.opacity(0.16)).frame(width: 40, height: 40)
+                Image(systemName: icon).font(.system(size: 18, weight: .semibold)).foregroundColor(color)
             }
-            Spacer()
-            if mastered { Image(systemName: "checkmark.seal.fill").foregroundColor(.apexEmerald) }
-            Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
+            Text(title).font(AppFont.cardTitle).foregroundColor(.primary)
+            Text(detail).font(AppFont.caption).foregroundColor(.secondary)
+            Text(footnote).font(AppFont.chip).foregroundColor(color)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Spacing.sm)
-        .background(Color.apexBackground).cornerRadius(Radius.chip)
-        .opacity(mastered ? 0.6 : 1)
-    }
-
-    // MARK: 句式 / 词块库
-
-    private var phraseLibrary: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            SectionHeader(title: "句式 / 词块库", systemImage: "text.quote", accent: .apexEmerald)
-            ForEach(PhraseCategory.allCases) { cat in
-                VStack(alignment: .leading, spacing: Spacing.sm) {
-                    TagChip(text: cat.title, color: cat.color)
-                    ForEach(PhraseBook.cards(in: cat)) { card in
-                        HStack(alignment: .top, spacing: Spacing.sm) {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(card.en).font(AppFont.body).foregroundColor(.primary)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                Text(card.zh).font(AppFont.caption).foregroundColor(.secondary)
-                                Text(card.usage).font(AppFont.chip).foregroundColor(cat.color)
-                            }
-                            Spacer(minLength: 0)
-                            ReviewToggleButton(id: "p:\(card.id)")
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(Spacing.sm)
-                        .background(Color.apexBackground).cornerRadius(Radius.chip)
-                    }
-                }
-            }
-        }
-        .cardSurface()
+        .cardSurface(padding: Spacing.md)
     }
 }
 
 struct KnowledgeDetailView: View {
     let point: JuniorKnowledgePoint
     @ObservedObject private var progress = KnowledgeProgressStore.shared
+    @ObservedObject private var methodStore = StudyMethodStore.shared
+
+    private var method: StudyMethod { StudyMethodCatalog.primary(for: point) }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.lg) {
-                HStack { TagChip(text: point.stage.title, color: .apexStarBlue); TagChip(text: point.ability.title, color: .apexMystery) }
+                HStack {
+                    TagChip(text: point.stage.title, color: .apexStarBlue)
+                    TagChip(text: point.ability.title, color: .apexMystery)
+                    if progress.isPracticed(point.id) { TagChip(text: "已练过", color: .apexEmerald) }
+                }
                 Text(point.title).font(AppFont.sectionTitle)
                 Text(point.summary).font(AppFont.body).foregroundColor(.secondary)
                 let lesson = KnowledgeLessonCatalog.lesson(for: point)
@@ -171,11 +185,7 @@ struct KnowledgeDetailView: View {
                     Text("易错点：\(lesson.trap)").font(AppFont.caption).foregroundColor(.apexLava)
                     Text("迁移任务：\(lesson.transfer)").font(AppFont.caption).foregroundColor(.secondary)
                 }.cardSurface(padding: Spacing.md)
-                VStack(alignment: .leading, spacing: Spacing.sm) {
-                    Label("掌握方法", systemImage: "lightbulb.fill").font(AppFont.cardTitle).foregroundColor(.apexGold)
-                    Text("先理解规则，再观察例句中的结构，最后用同一结构替换人物、动作或时间。")
-                        .font(AppFont.body).foregroundColor(.secondary)
-                }.cardSurface(padding: Spacing.md)
+                methodCard
                 Button {
                     progress.toggle(point.id)
                 } label: {
@@ -186,13 +196,18 @@ struct KnowledgeDetailView: View {
                 }.buttonStyle(.plain)
                 SectionHeader(title: "示例", systemImage: "text.quote", accent: .apexLava)
                 ForEach(point.examples, id: \.self) { example in
-                    Text(example).font(AppFont.cardTitle).frame(maxWidth: .infinity, alignment: .leading)
-                        .cardSurface(padding: Spacing.md)
+                    HStack(alignment: .top, spacing: Spacing.sm) {
+                        Text(example).font(AppFont.cardTitle)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        PronounceButton(text: example, englishOnly: true)
+                    }
+                    .cardSurface(padding: Spacing.md)
                 }
                 VStack(alignment: .leading, spacing: Spacing.sm) {
                     Label("易错提醒", systemImage: "exclamationmark.triangle.fill").font(AppFont.cardTitle).foregroundColor(.apexLava)
-                    Text("不要只背中文意思。检查主语、动词形式、词序和时间标志是否互相匹配。")
+                    Text(method.pitfall)
                         .font(AppFont.body).foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }.cardSurface(padding: Spacing.md)
                 let practiceCount = KnowledgePracticeFactory.questions(for: point).count
                 NavigationLink("开始专项练习（\(practiceCount) 题）") { KnowledgePracticeView(point: point) }
@@ -201,6 +216,39 @@ struct KnowledgeDetailView: View {
                     .disabled(practiceCount == 0)
             }.padding(Spacing.lg)
         }.background(Color.apexBackground.ignoresSafeArea()).navigationTitle("知识点")
+    }
+
+    /// 用这个知识点对应的「学习方法」替代原来那句通用文案：方法名 + 四步 + 掌握度 + 直达入口。
+    private var methodCard: some View {
+        let score = methodStore.score(for: method)
+        return VStack(alignment: .leading, spacing: Spacing.md) {
+            HStack(spacing: Spacing.sm) {
+                Image(systemName: method.icon).foregroundColor(method.accent)
+                Text("用「\(method.title)」学这个知识点").font(AppFont.cardTitle)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+                Text(score > 0 ? "\(score) 分" : "未练")
+                    .font(AppFont.chip).foregroundColor(method.accent)
+            }
+            ForEach(Array(method.steps.enumerated()), id: \.offset) { index, step in
+                HStack(alignment: .top, spacing: Spacing.sm) {
+                    Text("\(index + 1)").font(AppFont.bigStat(12)).foregroundColor(.white)
+                        .frame(width: 18, height: 18).background(method.accent).clipShape(Circle())
+                    Text(step).font(AppFont.caption)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                }
+            }
+            HStack(spacing: Spacing.md) {
+                NavigationLink { StudyMethodDetailView(method: method) } label: {
+                    Text("看方法详情").font(AppFont.chip).foregroundColor(.apexStarBlue)
+                }.buttonStyle(.plain)
+                Spacer()
+                ReviewToggleButton(id: "m:\(method.rawValue)")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cardSurface(padding: Spacing.md)
     }
 }
 

@@ -19,8 +19,11 @@ schemes:
     run:
       storeKitConfiguration: EngTopApp.storekit
     test:
+      storeKitConfiguration: EngTopApp.storekit
       targets:
         - EngTopAppTests
+    profile:
+      storeKitConfiguration: EngTopApp.storekit
 targets:
   EngTopAppTests:
     type: bundle.unit-test

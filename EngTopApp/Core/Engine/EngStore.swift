@@ -14,7 +14,7 @@ struct StoredSignal: Codable {
     let date: Date
 }
 
-/// EngApex 的状态中枢：记录做题数据 → 喂三大算法引擎 → 驱动整个 UI。
+/// EngTop 的状态中枢：记录做题数据 → 喂三大算法引擎 → 驱动整个 UI。
 /// 持久化用 UserDefaults（Codable blob），离线、无后端。
 final class EngStore: ObservableObject {
     static let shared = EngStore()

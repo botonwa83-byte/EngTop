@@ -1,7 +1,8 @@
 import AVFoundation
 
-/// 听力材料朗读器：用系统离线语音合成朗读 listeningScript，零音频资源、零 API。
-/// 脚本里的"W:"/"M:"只用来按说话人切句和换声，本身不会被朗读出来；两个角色各配男女声，更接近真实对话感。
+/// 全局发音引擎：用系统离线语音合成（AVSpeechSynthesizer）发声，零音频资源、零 API。
+/// 两条入口：play(_:) 朗读听力材料（按 "W:"/"M:" 说话人切句换声）；speak(_:) 即点即读单词/例句/句式。
+/// 所有模块（听力、词汇、复习、高频狙击、图鉴）都汇聚到这个单例，互斥播放，逻辑自洽。
 final class SpeechPlayer: NSObject, ObservableObject {
     static let shared = SpeechPlayer()
 
@@ -36,6 +37,35 @@ final class SpeechPlayer: NSObject, ObservableObject {
             utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.92
             synthesizer.speak(utterance)
         }
+    }
+
+    /// 单词 / 例句 / 句式的即点即读。与 play(_:) 共用同一合成器：开口前先停掉正在播的内容，
+    /// 全局同一时间只有一路声音（听力、词汇、复习、高频狙击四处都汇聚到这一个出口）。
+    /// - Parameters:
+    ///   - text: 待朗读的英文文本
+    ///   - rate: 语速；单词用默认语速更清晰，长句可传 0.92 倍默认语速
+    func speak(_ text: String, rate: Float = AVSpeechUtteranceDefaultSpeechRate) {
+        stop()
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        pendingCount = 1
+        isPlaying = true
+        let utterance = AVSpeechUtterance(string: trimmed)
+        utterance.voice = womanVoice ?? AVSpeechSynthesisVoice(language: "en-US")
+        utterance.rate = rate
+        synthesizer.speak(utterance)
+    }
+
+    /// 带中文注释的英文文本只读英文部分：高频考点的例证常为"英文 → 中文解析"格式，
+    /// 按 "→"（或全角"→"）截断，避免英文语音引擎读出中文。
+    static func englishPrefix(of text: String) -> String {
+        for marker in ["→", "->"] {
+            if let range = text.range(of: marker) {
+                return String(text[..<range.lowerBound])
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+        }
+        return text
     }
 
     func stop() {

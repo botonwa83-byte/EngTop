@@ -38,7 +38,7 @@ struct PromoView: View {
                                 .shadow(color: Color.apexStarBlue.opacity(glow ? 0.7 : 0.3), radius: glow ? 26 : 12)
                             Image(systemName: "graduationcap.fill").font(.system(size: 42, weight: .bold)).foregroundColor(.white)
                         }
-                        Text("ENG APEX")
+                        Text("ENG TOP")
                             .font(.system(size: 30, weight: .heavy, design: .rounded)).tracking(2)
                             .foregroundStyle(LinearGradient(colors: [.apexStarBlue, .apexEmerald], startPoint: .leading, endPoint: .trailing))
                         Text("英 语 登 顶 · 提 分 导 航")

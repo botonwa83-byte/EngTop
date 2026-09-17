@@ -1,11 +1,11 @@
 import SwiftUI
 
-/// 英语能力驾驶舱：把 Apex 的算法反馈改造成小学初中的每日能力训练。
+/// 英语能力驾驶舱：只回答"今天该做什么"——行动卡在上，数据展示收进「学习报告」子页。
 struct DashboardView: View {
     @EnvironmentObject var store: EngStore
-    @EnvironmentObject var purchase: PurchaseManager
     @ObservedObject private var daily = DailyManager.shared
     @ObservedObject private var learningProgress = LearningProgressStore.shared
+    @ObservedObject private var methodStore = StudyMethodStore.shared
     @State private var showPaywall = false
 
     var body: some View {
@@ -13,25 +13,89 @@ struct DashboardView: View {
             ScrollView {
                 VStack(spacing: Spacing.xl) {
                     welcomeHeader
+                    quickAccess
                     gravityChallenge
                     dailyKnowledge
+                    dailyMethod
                     learningMissionCard
                     planCard
-                    abilitySection
-                    learningAbilitySection
-                    estimatorCard
+                    reportEntry
                     sniperCard
                     reviewCard
                     radarSection
-                    moduleBars
                 }
                 .padding(Spacing.lg)
                 .readableWidth()
             }
             .background(Color.apexBackground.ignoresSafeArea())
-        .navigationTitle("提分决策力 · 驾驶舱")
+            .navigationTitle("提分决策力 · 驾驶舱")
         }
         .sheet(isPresented: $showPaywall) { PaywallView() }
+    }
+
+    /// 快捷入口：检索优先，其次是三个最常用的库。解决"想找东西要多层翻"的问题。
+    private var quickAccess: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            NavigationLink { LibrarySearchView() } label: {
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: "magnifyingglass").foregroundColor(.secondary)
+                    Text("搜单词、句式、知识点").font(AppFont.body).foregroundColor(.secondary)
+                    Spacer()
+                    Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
+                }
+                .padding(.vertical, Spacing.md).padding(.horizontal, Spacing.md)
+                .background(Color.apexCardSurface)
+                .cornerRadius(Radius.inner)
+                .overlay(RoundedRectangle(cornerRadius: Radius.inner).stroke(Color.secondary.opacity(0.18)))
+            }.buttonStyle(.plain)
+
+            HStack(spacing: Spacing.sm) {
+                quickChip("重点词汇 500", icon: "text.book.closed", color: .apexStarBlue) { WordBankView() }
+                quickChip("句式库", icon: "text.quote", color: .apexEmerald) { PhraseLibraryView() }
+                quickChip("知识点", icon: "map", color: .apexMystery) { KnowledgeLibraryView() }
+            }
+        }
+    }
+
+    private func quickChip<D: View>(_ title: String, icon: String, color: Color,
+                                    @ViewBuilder destination: @escaping () -> D) -> some View {
+        NavigationLink { destination() } label: {
+            HStack(spacing: 5) {
+                Image(systemName: icon).font(.system(size: 12, weight: .semibold))
+                Text(title).font(AppFont.chip)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 9)
+            .background(color.opacity(0.14))
+            .foregroundColor(color)
+            .clipShape(Capsule())
+        }.buttonStyle(.plain)
+    }
+
+    /// 学习报告入口：把展示型数据沉到子页，首页保留一行关键结论。
+    private var reportEntry: some View {
+        let answered = store.abilityProfile.xp > 0
+        return NavigationLink { StudyReportView() } label: {
+            HStack(spacing: Spacing.md) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: Radius.inner)
+                        .fill(Color.apexStarBlue.opacity(0.16)).frame(width: 56, height: 56)
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .font(.title2).foregroundColor(.apexStarBlue)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("学习报告").font(AppFont.cardTitle)
+                    Text(answered
+                         ? "能力等级 Lv.\(store.abilityProfile.level) · 估分 \(Int(store.totalEstimate.score)) · 看雷达与各模块估分"
+                         : "做几道题后，这里会给出能力雷达与各模块估分")
+                        .font(AppFont.caption).foregroundColor(.secondary).lineLimit(2)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
+            }
+            .cardSurface(padding: Spacing.md)
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder private var dailyKnowledge: some View {
@@ -52,8 +116,32 @@ struct DashboardView: View {
         }
     }
 
-    private var welcomeHeader: some View {
-        HStack(alignment: .center) {
+    /// 今日方法：把「怎么学」放到首页，与「今日知识点」形成"方法 + 知识"的配对。
+    private var dailyMethod: some View {
+        let method = methodStore.recommendedMethod
+        let score = methodStore.score(for: method)
+        return NavigationLink { StudyMethodDetailView(method: method) } label: {
+            HStack(spacing: Spacing.md) {
+                Image(systemName: method.icon).font(.title2).foregroundColor(method.accent).frame(width: 42)
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text("今日方法").font(AppFont.caption).foregroundColor(.secondary)
+                        if methodStore.stat(for: method).attempts > 0 {
+                            TagChip(text: "掌握度 \(score)", color: method.accent)
+                        } else {
+                            TagChip(text: "未练过", color: .apexGold)
+                        }
+                    }
+                    Text(method.title).font(AppFont.cardTitle)
+                    Text(method.steps.first ?? method.oneLiner).font(AppFont.caption).foregroundColor(.secondary).lineLimit(2)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
+            }.cardSurface(padding: Spacing.md)
+        }.buttonStyle(.plain)
+    }
+
+    private var welcomeHeader: some View {        HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("早上好，准备觉醒语感吗？").font(AppFont.cardTitle)
                 Text("EngTop · 每天 10 分钟，英语变成你的超能力").font(AppFont.caption).foregroundColor(.secondary)
@@ -126,110 +214,7 @@ struct DashboardView: View {
         .buttonStyle(.plain)
     }
 
-    private var abilitySection: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            SectionHeader(title: "能力雷达", systemImage: "dot.radiowaves.left.and.right", accent: .apexStarBlue)
-            ForEach(Ability.allCases) { ability in
-                let score = store.abilityProfile.score(for: ability)
-                HStack(spacing: Spacing.sm) {
-                    Image(systemName: icon(for: ability)).foregroundColor(color(for: ability)).frame(width: 22)
-                    Text(ability.title).font(AppFont.body)
-                    ProgressView(value: Double(score), total: 100).tint(color(for: ability))
-                    Text("\(score)").font(AppFont.caption).foregroundColor(.secondary).frame(width: 28, alignment: .trailing)
-                }
-            }
-        }
-        .cardSurface(padding: Spacing.md)
-    }
-
-    private var learningAbilitySection: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            HStack {
-                SectionHeader(title: "学习能力成长", systemImage: "circle.hexagongrid.fill", accent: .apexMystery)
-                NavigationLink {
-                    LearningGymView()
-                } label: {
-                    Image(systemName: "arrow.up.right")
-                        .font(AppFont.caption)
-                        .foregroundColor(.apexMystery)
-                }
-                .accessibilityLabel("打开能力训练营")
-            }
-            Text("能力训练不止是答对：理解、推理、迁移和反思都会留下成长记录。")
-                .font(AppFont.caption)
-                .foregroundColor(.secondary)
-            ForEach(LearningAbility.allCases) { ability in
-                let score = learningProgress.score(for: ability)
-                HStack(spacing: Spacing.sm) {
-                    Image(systemName: ability.systemImage)
-                        .foregroundColor(learningColor(for: ability))
-                        .frame(width: 22)
-                    Text(ability.title).font(AppFont.body)
-                    ProgressView(value: Double(score), total: 100)
-                        .tint(learningColor(for: ability))
-                    Text("\(score)").font(AppFont.caption)
-                        .foregroundColor(.secondary)
-                        .frame(width: 28, alignment: .trailing)
-                }
-            }
-            Text("已完成 \(learningProgress.completedMissionCount)/\(LearningMissionCatalog.all.count) 项真实情境任务")
-                .font(AppFont.chip)
-                .foregroundColor(.secondary)
-        }
-        .cardSurface(padding: Spacing.md)
-    }
-
-    private func learningColor(for ability: LearningAbility) -> Color {
-        switch ability {
-        case .information: return .apexStarBlue
-        case .reasoning: return .apexMystery
-        case .transfer: return .apexEmerald
-        case .expression: return .apexLava
-        case .planning: return .apexGold
-        case .reflection: return .apexDanger
-        }
-    }
-
-    private func icon(for ability: Ability) -> String {
-        switch ability {
-        case .vocabulary: return "textformat.abc"
-        case .wordOrder: return "arrow.up.and.down"
-        case .tense: return "clock"
-        case .reading: return "magnifyingglass"
-        case .listening: return "waveform"
-        case .expression: return "bubble.left.and.bubble.right"
-        }
-    }
-
-    private func color(for ability: Ability) -> Color {
-        switch ability {
-        case .vocabulary, .reading: return .apexStarBlue
-        case .wordOrder, .expression: return .apexLava
-        case .tense, .listening: return .apexEmerald
-        }
-    }
-
-    // MARK: 解锁完整版（首页与"更多"页同一文案，保持一致）
-
-    @ViewBuilder private var unlockBanner: some View {
-        if !purchase.isUnlocked {
-            Button { showPaywall = true } label: {
-                HStack(spacing: Spacing.md) {
-                    Image(systemName: "crown.fill").font(.title3).foregroundColor(.apexGold)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("解锁完整版").font(AppFont.cardTitle)
-                        Text("主线 7 关全开（阅读/应用文/读后续写/听力），一次买断")
-                            .font(AppFont.caption).foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
-                }
-                .cardSurface(padding: Spacing.md)
-            }.buttonStyle(.plain)
-        }
-    }
-
-    // MARK: 今日提分计划（高考倒计时 + Streak + 三目标）
+    // MARK: 今日提分计划（连续打卡 + 三目标）
 
     private var planCard: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
@@ -271,30 +256,6 @@ struct DashboardView: View {
                 .strikethrough(done)
             Spacer()
         }
-    }
-
-    // MARK: 估分仪表盘
-
-    private var estimatorCard: some View {
-        let total = store.totalEstimate
-        let answered = store.abilityProfile.xp > 0
-        return VStack(spacing: Spacing.md) {
-            Text("英语能力 · 今日等级").font(AppFont.caption).foregroundColor(.secondary)
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text(answered ? "\(store.abilityProfile.xp)" : "—")
-                    .font(AppFont.bigStat(52)).foregroundColor(.apexStarBlue)
-                Text(" XP").font(AppFont.body).foregroundColor(.secondary)
-            }
-            if answered {
-                Text("能力等级 Lv.\(store.abilityProfile.level) · 连击 \(store.abilityProfile.combo)")
-                    .font(AppFont.caption).foregroundColor(.secondary)
-            } else {
-                Text("完成挑战，能力雷达就会开始校准")
-                    .font(AppFont.caption).foregroundColor(.secondary)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .cardSurface()
     }
 
     // MARK: 高频狙击入口
@@ -383,36 +344,6 @@ struct DashboardView: View {
             }
         }
         .cardSurface(padding: Spacing.md)
-    }
-
-    // MARK: 各模块估分条
-
-    private var moduleBars: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            SectionHeader(title: "各模块估分", systemImage: "chart.bar.fill", accent: .apexStarBlue)
-            ForEach(store.estimates) { est in
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Image(systemName: est.module.icon).font(.caption).foregroundColor(.secondary)
-                        Text(est.module.title).font(AppFont.body)
-                        Spacer()
-                        Text("\(fmt(est.estimatedScore))/\(fmt(est.fullScore))")
-                            .font(AppFont.caption).foregroundColor(.secondary)
-                        if est.confidence < 0.2 {
-                            Text("待测").font(AppFont.chip).foregroundColor(.apexGold)
-                        }
-                    }
-                    GeometryReader { geo in
-                        ZStack(alignment: .leading) {
-                            Capsule().fill(Color.secondary.opacity(0.15))
-                            Capsule().fill(Color.apexStarBlue)
-                                .frame(width: geo.size.width * est.scoreRatio)
-                        }
-                    }.frame(height: 8)
-                }
-            }
-        }
-        .cardSurface()
     }
 
     private func fmt(_ v: Double) -> String {

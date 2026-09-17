@@ -8,11 +8,14 @@ struct ReviewCard: Codable {
     var due: Date = Date()      // 下次到期
 }
 
-/// 复习项的来源：错题 / 句式卡 / 词汇卡。id 形如 "q:g1" / "p:p3" / "v:v_address"。
+/// 复习项的来源：错题 / 句式卡 / 词汇卡 / 知识点题 / 学习方法。
+/// id 形如 "q:g1" / "p:p3" / "v:v_address" / "k:inj3-j1-past" / "m:timeMarker"。
 enum ReviewRef {
     case question(Question)
     case phrase(PhraseCard)
     case vocab(VocabWord)
+    case knowledge(KnowledgePracticeQuestion)
+    case method(StudyMethod)
 
     static func resolve(_ id: String) -> ReviewRef? {
         guard let sep = id.firstIndex(of: ":") else { return nil }
@@ -21,8 +24,16 @@ enum ReviewRef {
         case "q": return QuestionBank.find(key).map(ReviewRef.question)
         case "p": return PhraseBook.all.first { $0.id == key }.map(ReviewRef.phrase)
         case "v": return VocabData.find(key).map(ReviewRef.vocab)
+        case "k": return CuratedKnowledgeQuestions.find(key).map(ReviewRef.knowledge)
+        case "m": return StudyMethod(rawValue: key).map(ReviewRef.method)
         default:  return nil
         }
+    }
+
+    /// 该复习项对应的知识点（用于把复习结果回写到知识图谱）。
+    var knowledgePointID: String? {
+        if case .knowledge(let q) = self { return q.knowledgePointID }
+        return nil
     }
 }
 

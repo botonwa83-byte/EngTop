@@ -79,7 +79,7 @@ struct PaywallView: View {
                         .multilineTextAlignment(.center).padding(.horizontal, 24).padding(.top, 8)
                 }
 
-                Text("购买即视为同意[用户协议](https://botonwa83-byte.github.io/engapex/terms.html)与[隐私政策](https://botonwa83-byte.github.io/engapex/privacy.html)。付款通过 Apple 账户完成，换机后可在「恢复购买」找回。")
+                Text("购买即视为同意[用户协议](https://botonwa83-byte.github.io/EngTop/terms.html)与[隐私政策](https://botonwa83-byte.github.io/EngTop/privacy.html)。付款通过 Apple 账户完成，换机后可在「恢复购买」找回。")
                     .font(.system(size: 10)).foregroundColor(.secondary)
                     .tint(.apexLava)
                     .multilineTextAlignment(.center)

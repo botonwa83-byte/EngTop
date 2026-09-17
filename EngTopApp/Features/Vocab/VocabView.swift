@@ -1,56 +1,7 @@
 import SwiftUI
 
-/// 词汇专项：拼写 + 搭配/僻义小测，按"高频且最弱"排序，掌握度落到具体单词而非整道题。
-struct VocabView: View {
-    @ObservedObject private var store = VocabStore.shared
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.lg) {
-                banner
-                ForEach(Array(store.priorityList(VocabData.all).enumerated()), id: \.element.word.id) { idx, entry in
-                    NavigationLink { VocabDetailView(word: entry.word) } label: {
-                        wordRow(rank: idx + 1, word: entry.word)
-                    }.buttonStyle(.plain)
-                }
-            }
-            .padding(Spacing.lg).readableWidth()
-        }
-        .background(Color.apexBackground.ignoresSafeArea())
-        .navigationTitle("词汇专项")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-
-    private var banner: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Label("词汇狙击", systemImage: "character.book.closed").font(AppFont.cardTitle).foregroundColor(.apexLava)
-            Text("拼写 / 搭配辨析 / 熟词僻义三种练法；高频且你最弱的词永远排最前。").font(AppFont.caption).foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .cardSurface(padding: Spacing.md)
-    }
-
-    private func wordRow(rank: Int, word: VocabWord) -> some View {
-        let mastered = store.isMastered(word.id)
-        return HStack(spacing: Spacing.md) {
-            Text("\(rank)").font(AppFont.bigStat(20)).foregroundColor(.apexLava).frame(width: 26)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 6) {
-                    Text(word.headword).font(AppFont.cardTitle)
-                    TagChip(text: word.category.title, color: word.category == .collocation ? .apexStarBlue : .apexMystery)
-                }
-                Text(word.meaning).font(AppFont.caption).foregroundColor(.secondary).lineLimit(1)
-            }
-            Spacer()
-            if mastered { Image(systemName: "checkmark.seal.fill").foregroundColor(.apexEmerald) }
-            Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
-        }
-        .cardSurface(padding: Spacing.md)
-        .opacity(mastered ? 0.6 : 1)
-    }
-}
-
 /// 单词详情：释义/例句/搭配 + 拼写练习 + 搭配·僻义小测。
+/// 列表页统一在素材库的「词汇专项」子页（VocabLibraryView），这里只负责单个词条。
 struct VocabDetailView: View {
     let word: VocabWord
     @ObservedObject private var store = VocabStore.shared
@@ -81,8 +32,12 @@ struct VocabDetailView: View {
                 Spacer()
                 ReviewToggleButton(id: "v:\(word.id)")
             }
+            HeadwordPronounceRow(headword: word.headword)
             Text(word.meaning).font(AppFont.body)
-            Text(word.example).font(AppFont.body).italic().fixedSize(horizontal: false, vertical: true)
+            HStack(alignment: .top, spacing: Spacing.sm) {
+                Text(word.example).font(AppFont.body).italic().fixedSize(horizontal: false, vertical: true)
+                PronounceButton(text: word.example, englishOnly: true)
+            }
             Text(word.exampleMeaning).font(AppFont.caption).foregroundColor(.secondary)
             if !word.collocations.isEmpty {
                 FlowLayout(spacing: 6) {
@@ -114,8 +69,11 @@ struct VocabDetailView: View {
                     .cornerRadius(Radius.inner)
             }.disabled(spellingInput.trimmingCharacters(in: .whitespaces).isEmpty)
             if let ok = spellingChecked {
-                Label(ok ? "拼写正确！" : "正确拼写是：\(word.headword)", systemImage: ok ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundColor(ok ? .apexEmerald : .apexDanger).font(AppFont.body)
+                HStack(spacing: Spacing.sm) {
+                    Label(ok ? "拼写正确！" : "正确拼写是：\(word.headword)", systemImage: ok ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .foregroundColor(ok ? .apexEmerald : .apexDanger).font(AppFont.body)
+                    if !ok { PronounceButton(text: word.headword) }
+                }
             }
         }
         .cardSurface()

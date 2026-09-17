@@ -92,7 +92,7 @@ struct MainTabView: View {
             NavigationStack { AppliedWritingWorkshopView() }
         }
         .fullScreenCover(isPresented: $demoVocab) {
-            NavigationStack { VocabView() }
+            NavigationStack { VocabLibraryView() }
         }
     }
 }
