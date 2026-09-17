@@ -28,7 +28,19 @@ final class EngStore: ObservableObject {
 
     private let key = "engstore.v1"
 
-    private init() { load() }
+    /// 引擎结果缓存：数据一变就整体失效，避免 SwiftUI 每次求值都全量重算。
+    private var engineCache = EngineCache()
+    /// 合并写入：一次作答里的多次 save，只在 0.25 秒后落盘一次。
+    private var needsSave = false
+    private var saveScheduled = false
+
+    private init() {
+        load()
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.willResignActiveNotification,
+            object: nil, queue: .main
+        ) { [weak self] _ in self?.flushNow() }
+    }
 
     // MARK: - 写入
 
@@ -125,7 +137,8 @@ final class EngStore: ObservableObject {
 
     /// 各模块做题表现 → 估分器输入。
     var performances: [ModulePerformance] {
-        ExamModule.allCases.compactMap { module in
+        if let cached = engineCache.performances { return cached }
+        let value: [ModulePerformance] = ExamModule.allCases.compactMap { module -> ModulePerformance? in
             let qs = QuestionBank.all.filter { $0.module == module }
             let answered = qs.compactMap { q -> (Question, QStat)? in
                 guard let s = stats[q.id], s.attempts > 0 else { return nil }
@@ -143,16 +156,27 @@ final class EngStore: ObservableObject {
             let weightedAcc = wSum > 0 ? accW / wSum : 0
             return ModulePerformance(module: module, attempts: attempts, weightedAccuracy: weightedAcc)
         }
+        engineCache.performances = value
+        return value
     }
 
-    var estimates: [ModuleEstimate] { EstimatorEngine.estimate(performances) }
+    var estimates: [ModuleEstimate] {
+        if let cached = engineCache.estimates { return cached }
+        let value = EstimatorEngine.estimate(performances)
+        engineCache.estimates = value
+        return value
+    }
 
     var totalEstimate: (score: Double, low: Double, high: Double) {
-        EstimatorEngine.total(estimates)
+        if let cached = engineCache.totalEstimate { return cached }
+        let value = EstimatorEngine.total(estimates)
+        engineCache.totalEstimate = value
+        return value
     }
 
     /// 近期错误率（按模块作答总数归一）→ 提分雷达输入。
     var recentErrorRate: [ExamModule: Double] {
+        if let cached = engineCache.recentErrorRate { return cached }
         var totalByModule: [ExamModule: Int] = [:]
         for (id, s) in stats {
             guard let q = QuestionBank.find(id) else { continue }
@@ -167,11 +191,15 @@ final class EngStore: ObservableObject {
         for (m, t) in totalByModule where t > 0 {
             rate[m] = min(1, Double(errByModule[m] ?? 0) / Double(t))
         }
+        engineCache.recentErrorRate = rate
         return rate
     }
 
     var radar: [GainOpportunity] {
-        GainRadar.opportunities(from: estimates, recentErrorRate: recentErrorRate)
+        if let cached = engineCache.radar { return cached }
+        let value = GainRadar.opportunities(from: estimates, recentErrorRate: recentErrorRate)
+        engineCache.radar = value
+        return value
     }
 
     func topPath(limit: Int = 3) -> [GainOpportunity] {
@@ -204,7 +232,32 @@ final class EngStore: ObservableObject {
         var abilityProfile: AbilityProfile?
     }
 
+    /// 引擎结果缓存容器。
+    private struct EngineCache {
+        var performances: [ModulePerformance]?
+        var estimates: [ModuleEstimate]?
+        var totalEstimate: (score: Double, low: Double, high: Double)?
+        var recentErrorRate: [ExamModule: Double]?
+        var radar: [GainOpportunity]?
+    }
+
+    /// 标记需要落盘：真正的 encode 会合并到下一次空闲时刻执行，
+    /// 这样「一次作答 = 一次写入」，主线程不再被反复 encode 卡住。
     private func save() {
+        engineCache = EngineCache()
+        needsSave = true
+        guard !saveScheduled else { return }
+        saveScheduled = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            guard let self else { return }
+            self.saveScheduled = false
+            if self.needsSave { self.flushNow() }
+        }
+    }
+
+    /// 立即落盘（合并窗口结束时、或 App 进入后台时调用）。
+    func flushNow() {
+        needsSave = false
         let blob = Blob(stats: stats, signals: signals,
                         completedLevels: Array(completedLevels), flagged: Array(flagged),
                         masteredPoints: Array(masteredPoints), abilityProfile: abilityProfile)
