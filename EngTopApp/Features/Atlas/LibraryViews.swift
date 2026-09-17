@@ -141,9 +141,9 @@ struct KnowledgeLibraryView: View {
         Button(action: onRemove) {
             HStack(spacing: 4) {
                 Text(title).font(AppFont.chip)
-                Image(systemName: "xmark.circle.fill").font(.system(size: 11))
+                Image(systemName: "xmark.circle.fill").font(AppFont.micro)
             }
-            .padding(.horizontal, 8).padding(.vertical, 4)
+            .padding(.horizontal, Spacing.sm).padding(.vertical, Spacing.xs)
             .background(Color.apexStarBlue.opacity(0.14))
             .foregroundColor(.apexStarBlue)
             .clipShape(Capsule())

@@ -20,7 +20,8 @@ struct PaywallView: View {
     @ObservedObject private var purchase = PurchaseManager.shared
     @Environment(\.dismiss) private var dismiss
 
-    private var priceLabel: String { purchase.product?.displayPrice ?? "¥22" }
+    /// 价格以 ASC 为准；拉取失败时显示占位，避免长期展示与后台不一致的兜底价。
+    private var priceLabel: String { purchase.product?.displayPrice ?? "—" }
 
     var body: some View {
         ScrollView {
@@ -54,9 +55,9 @@ struct PaywallView: View {
                                title: "一次买断，永久使用",
                                desc: "无订阅、无续费，内容持续更新；支持换机恢复购买")
                 }
-                .padding(.horizontal, 24).padding(.top, 28).padding(.bottom, 20)
+                .padding(.horizontal, Spacing.page).padding(.top, Spacing.xxl).padding(.bottom, Spacing.xl)
 
-                Divider().padding(.horizontal, 24)
+                Divider().padding(.horizontal, Spacing.page)
 
                 VStack(spacing: 6) {
                     Text("免费已开放：主线前 \(PurchaseManager.freeLevelCount) 关（语法填空 / 完形 / 七选五）完整可练；两个工坊每个体裁/主题第 1 个场景免费预览；估分器 / 提分雷达 / 考点图谱 / 句式库 / 词汇专项 / 错题本永久免费")
@@ -65,18 +66,18 @@ struct PaywallView: View {
                     Text("先免费练前三关感受算法导航，再解锁全套 →")
                         .font(.footnote).fontWeight(.medium).foregroundColor(.apexLava)
                 }
-                .padding(.vertical, 16).padding(.horizontal, 24)
+                .padding(.vertical, Spacing.lg).padding(.horizontal, Spacing.page)
 
-                purchaseButton.padding(.horizontal, 24)
+                purchaseButton.padding(.horizontal, Spacing.page)
 
                 Button { Task { await purchase.restore() } } label: {
                     Text("恢复购买").font(.footnote).foregroundColor(.secondary).underline()
                 }
-                .padding(.top, 12).disabled(purchase.isPurchasing)
+                .padding(.top, Spacing.md).disabled(purchase.isPurchasing)
 
                 if let err = purchase.errorMessage {
                     Text(err).font(.caption).foregroundColor(.apexDanger)
-                        .multilineTextAlignment(.center).padding(.horizontal, 24).padding(.top, 8)
+                        .multilineTextAlignment(.center).padding(.horizontal, Spacing.page).padding(.top, 8)
                 }
 
                 Text("购买即视为同意[用户协议](https://botonwa83-byte.github.io/EngTop/terms.html)与[隐私政策](https://botonwa83-byte.github.io/EngTop/privacy.html)。付款通过 Apple 账户完成，换机后可在「恢复购买」找回。")
@@ -106,25 +107,37 @@ struct PaywallView: View {
     }
 
     private var purchaseButton: some View {
-        Button { Task { await purchase.purchase() } } label: {
-            HStack(spacing: 10) {
-                if purchase.isPurchasing { ProgressView().tint(.white) }
-                else { Image(systemName: "lock.open.fill") }
-                Text(purchase.isPurchasing ? "处理中…" : "立即解锁  \(priceLabel)").fontWeight(.bold)
+        VStack(spacing: 8) {
+            Button { Task { await purchase.purchase() } } label: {
+                HStack(spacing: 10) {
+                    if purchase.isPurchasing { ProgressView().tint(.white) }
+                    else { Image(systemName: "lock.open.fill") }
+                    Text(purchase.isPurchasing ? "处理中…" : "立即解锁  \(priceLabel)").fontWeight(.bold)
+                }
+                .font(.headline).foregroundColor(.white)
+                .frame(maxWidth: .infinity).padding(.vertical, Spacing.lg)
+                .background(LinearGradient(colors: [.apexLava, .apexMystery], startPoint: .leading, endPoint: .trailing))
+                .cornerRadius(16)
+                .shadow(color: Color.apexLava.opacity(0.3), radius: 10, y: 4)
             }
-            .font(.headline).foregroundColor(.white)
-            .frame(maxWidth: .infinity).padding(.vertical, 16)
-            .background(LinearGradient(colors: [.apexLava, .apexMystery], startPoint: .leading, endPoint: .trailing))
-            .cornerRadius(16)
-            .shadow(color: Color.apexLava.opacity(0.3), radius: 10, y: 4)
+            .disabled(purchase.isPurchasing)
+
+            if purchase.productLoadFailed {
+                HStack(spacing: 8) {
+                    Text("价格暂时无法加载，请检查网络")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Button("重试") { Task { await purchase.retryLoadProduct() } }
+                        .font(.caption)
+                }
+            }
         }
-        .disabled(purchase.isPurchasing)
     }
 
     private func benefitRow(icon: String, color: Color, title: String, desc: String) -> some View {
         HStack(alignment: .top, spacing: 14) {
             ZStack {
-                RoundedRectangle(cornerRadius: 10).fill(color.opacity(0.15)).frame(width: 38, height: 38)
+                RoundedRectangle(cornerRadius: Radius.field).fill(color.opacity(0.15)).frame(width: 38, height: 38)
                 Image(systemName: icon).font(.subheadline).foregroundColor(color)
             }
             VStack(alignment: .leading, spacing: 2) {

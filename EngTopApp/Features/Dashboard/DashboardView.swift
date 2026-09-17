@@ -160,7 +160,7 @@ struct DashboardView: View {
         } label: {
             HStack(spacing: Spacing.md) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 12).fill(Color.apexLava.opacity(0.16)).frame(width: 56, height: 56)
+                    RoundedRectangle(cornerRadius: Radius.inner).fill(Color.apexLava.opacity(0.16)).frame(width: 56, height: 56)
                     Image(systemName: "arrow.up.and.down.and.arrow.left.and.right").font(.title2).foregroundColor(.apexLava)
                 }
                 VStack(alignment: .leading, spacing: 4) {

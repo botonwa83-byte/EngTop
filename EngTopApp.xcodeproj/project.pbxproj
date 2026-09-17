@@ -142,7 +142,7 @@
 		58B3B831539411B5AD98251D /* HighFreqEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighFreqEngine.swift; sourceTree = "<group>"; };
 		59331BB2D2B4D17CC29A5326 /* EngStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngStore.swift; sourceTree = "<group>"; };
 		59603B7F05C39B4B389D35D2 /* WritingCoachEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingCoachEngine.swift; sourceTree = "<group>"; };
-		5A3DDE7C28B5BA67579EB657 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		5A3DDE7C28B5BA67579EB657 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5A4915A6B05A6D48438B926A /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		5F21D3FFA3A681A3DED92C35 /* WordBankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordBankView.swift; sourceTree = "<group>"; };
 		6B47A2F37D56E9E6F42E8112 /* QuestionBank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionBank.swift; sourceTree = "<group>"; };
@@ -178,7 +178,7 @@
 		D3977724607D725F93583229 /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		D419A692BA4A26BB60C5966E /* VocabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabView.swift; sourceTree = "<group>"; };
 		D6BC0076CFDC857BC082824D /* QuestionBank+PassageDrill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuestionBank+PassageDrill.swift"; sourceTree = "<group>"; };
-		D87EDF57A3C5BDD83417AF80 /* EngTopApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EngTopApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D87EDF57A3C5BDD83417AF80 /* EngTopApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = EngTopApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8F6D061BD464CC03DE75096 /* DailyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyManager.swift; sourceTree = "<group>"; };
 		DBEED336ACFDCFBDCAF65E62 /* QuestionBank+Extended8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuestionBank+Extended8.swift"; sourceTree = "<group>"; };
 		DD7773842CA68B84742DF516 /* WordPulsePromoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPulsePromoCard.swift; sourceTree = "<group>"; };
@@ -530,6 +530,8 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 097A2893412D0ED5CBC18B05 /* Build configuration list for PBXProject "EngTopApp" */;
 			developmentRegion = en;
@@ -738,10 +740,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = Z7F8BY55DS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = EngTopApp;
+				INFOPLIST_KEY_CFBundleDisplayName = "EngTop · 英语登顶";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -864,10 +865,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = Z7F8BY55DS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = EngTopApp;
+				INFOPLIST_KEY_CFBundleDisplayName = "EngTop · 英语登顶";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

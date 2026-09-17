@@ -3,17 +3,26 @@ import SwiftUI
 // MARK: - 设计系统（移植自 PhysicsApex）：统一间距 / 圆角 / 字阶 / 卡片样式
 
 enum Spacing {
+    static let xxs: CGFloat = 2
     static let xs: CGFloat = 4
     static let sm: CGFloat = 8
     static let md: CGFloat = 12
+    /// 输入框 / 表单行内边距
+    static let field: CGFloat = 14
     static let lg: CGFloat = 16
     static let xl: CGFloat = 20
+    /// 页面左右留白
+    static let page: CGFloat = 24
     static let xxl: CGFloat = 28
 }
 
 enum Radius {
     static let chip: CGFloat = 8
+    /// 输入框 / 小控件
+    static let field: CGFloat = 10
     static let inner: CGFloat = 12
+    /// 卡片 / 磁贴
+    static let tile: CGFloat = 16
     static let card: CGFloat = 20
     static let hero: CGFloat = 24
 }
@@ -24,6 +33,18 @@ enum AppFont {
     static let body = Font.subheadline
     static let caption = Font.caption
     static let chip = Font.system(size: 11, weight: .semibold)
+    /// 11 号正文（辅助说明）
+    static let micro = Font.system(size: 11)
+    /// 12 号正文
+    static let small = Font.system(size: 12)
+    /// 13 号说明
+    static let footnote = Font.system(size: 13)
+    /// 14 号小标题
+    static let subhead = Font.system(size: 14, weight: .semibold)
+    /// 16 号加粗
+    static let bodyBold = Font.system(size: 16, weight: .bold)
+    /// 大数字展示
+    static let heroNumber = Font.system(size: 48)
     static func bigStat(_ size: CGFloat = 30) -> Font {
         .system(size: size, weight: .bold, design: .rounded)
     }

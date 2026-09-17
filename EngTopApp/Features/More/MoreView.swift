@@ -22,7 +22,7 @@ struct MoreView: View {
                                 }
                                 Spacer()
                                 Image(systemName: "chevron.right").font(.caption).foregroundColor(.secondary)
-                            }.padding(.vertical, 4)
+                            }.padding(.vertical, Spacing.xs)
                         }
                     }
                 }
@@ -35,7 +35,7 @@ struct MoreView: View {
                             let due = ReviewScheduler.shared.dueCount
                             if due > 0 {
                                 Text("\(due)").font(AppFont.chip).foregroundColor(.white)
-                                    .padding(.horizontal, 7).padding(.vertical, 2)
+                                    .padding(.horizontal, Spacing.sm).padding(.vertical, Spacing.xxs)
                                     .background(Color.apexStarBlue).clipShape(Capsule())
                             }
                         }
@@ -55,7 +55,7 @@ struct MoreView: View {
                             Spacer()
                             if !store.flaggedQuestions.isEmpty {
                                 Text("\(store.flaggedQuestions.count)").font(AppFont.chip).foregroundColor(.white)
-                                    .padding(.horizontal, 7).padding(.vertical, 2)
+                                    .padding(.horizontal, Spacing.sm).padding(.vertical, Spacing.xxs)
                                     .background(Color.apexLava).clipShape(Capsule())
                             }
                         }
@@ -91,7 +91,7 @@ struct MoreView: View {
 
                 Section("推荐") {
                     WordPulsePromoCard()
-                        .padding(.vertical, 4)
+                        .padding(.vertical, Spacing.xs)
                 }
 
                 Section("关于与协议") {
@@ -180,7 +180,7 @@ struct ErrorBookView: View {
                             TagChip(text: q.module.title, color: .apexStarBlue)
                             TagChip(text: q.pointTag, color: .apexMystery)
                         }
-                    }.padding(.vertical, 2)
+                    }.padding(.vertical, Spacing.xxs)
                 }
             }
         }

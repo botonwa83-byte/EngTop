@@ -118,6 +118,8 @@ struct AppliedWritingDetailView: View {
             .padding(Spacing.lg).readableWidth()
         }
         .background(Color.apexBackground.ignoresSafeArea())
+        // 写作教练是长文本输入，滑动页面即可收起键盘
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle(prompt.title)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showPaywall) { PaywallView() }
@@ -159,7 +161,7 @@ struct AppliedWritingDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 4)
+        .padding(.vertical, Spacing.xs)
     }
 
     private func toggle(_ i: Int) {

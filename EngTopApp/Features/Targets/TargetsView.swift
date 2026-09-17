@@ -137,6 +137,8 @@ struct QuizView: View {
             }
         }
         .background(Color.apexBackground.ignoresSafeArea())
+        // 填空题输入后，滑动页面即可收起键盘
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle(level.title)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showDiagnose) {
@@ -212,7 +214,7 @@ struct QuizView: View {
     private var modelNote: some View {
         DisclosureGroup {
             Text(level.modelNote).font(AppFont.caption).foregroundColor(.secondary)
-                .fixedSize(horizontal: false, vertical: true).padding(.top, 4)
+                .fixedSize(horizontal: false, vertical: true).padding(.top, Spacing.xs)
         } label: {
             Label("得分点模型 / 解题决策树", systemImage: "lightbulb").font(AppFont.caption).foregroundColor(.apexGold)
         }
@@ -258,13 +260,13 @@ struct QuizView: View {
             }
             Label(q.trap, systemImage: "exclamationmark.triangle.fill")
                 .font(AppFont.caption).foregroundColor(.apexDanger)
-                .padding(.top, 4)
+                .padding(.top, Spacing.xs)
             if let script = q.listeningScript {
                 DisclosureGroup("听力原文回看") {
                     Text(script).font(AppFont.caption).foregroundColor(.secondary)
-                        .fixedSize(horizontal: false, vertical: true).padding(.top, 4)
+                        .fixedSize(horizontal: false, vertical: true).padding(.top, Spacing.xs)
                 }
-                .font(AppFont.caption).padding(.top, 4)
+                .font(AppFont.caption).padding(.top, Spacing.xs)
             }
             Button {
                 if selected == q.answer { advance() } else { showDiagnose = true }

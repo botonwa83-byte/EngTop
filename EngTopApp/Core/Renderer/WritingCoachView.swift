@@ -17,7 +17,7 @@ struct WritingCoachView: View {
                 .font(AppFont.caption).foregroundColor(.secondary)
             TextEditor(text: $draft)
                 .frame(height: 160)
-                .padding(4)
+                .padding(Spacing.xs)
                 .background(Color.apexBackground)
                 .cornerRadius(Radius.inner)
             Button {

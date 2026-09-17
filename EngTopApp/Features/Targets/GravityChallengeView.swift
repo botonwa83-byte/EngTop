@@ -63,7 +63,7 @@ struct GravityChallengeView: View {
                     message.hasPrefix("再观察") ? retry() : reset()
                 }
                     .font(AppFont.cardTitle).foregroundColor(.white)
-                    .padding(.horizontal, 24).padding(.vertical, 12)
+                    .padding(.horizontal, Spacing.page).padding(.vertical, Spacing.md)
                     .background(Color.apexLava).cornerRadius(Radius.inner)
             }
             Spacer()

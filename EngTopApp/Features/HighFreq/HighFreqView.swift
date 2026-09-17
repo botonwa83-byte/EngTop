@@ -88,7 +88,7 @@ struct HighFreqView: View {
     private func priorityBadge(_ hit: SniperHit) -> some View {
         let color: Color = hit.priorityLabel == "高" ? .apexDanger : (hit.priorityLabel == "中" ? .apexGold : .secondary)
         return Text("狙击优先级 \(hit.priorityLabel)").font(AppFont.chip)
-            .padding(.horizontal, 8).padding(.vertical, 3)
+            .padding(.horizontal, Spacing.sm).padding(.vertical, 3)
             .background(color.opacity(0.15)).foregroundColor(color).clipShape(Capsule())
     }
 }

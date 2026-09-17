@@ -167,7 +167,7 @@ struct WordBankSearchRow: View {
                 TagChip(text: entry.stageTitle, color: entry.stage == 1 ? .apexEmerald : .apexStarBlue)
                 Button { player.speak(entry.word) } label: {
                     Image(systemName: isPlaying ? "waveform" : "speaker.wave.fill")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(AppFont.subhead)
                         .foregroundColor(isPlaying ? .apexEmerald : .apexStarBlue)
                 }.buttonStyle(.plain)
             }
@@ -185,6 +185,6 @@ struct WordBankSearchRow: View {
                 }
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, Spacing.xxs)
     }
 }

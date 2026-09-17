@@ -73,7 +73,7 @@ struct WordBankView: View {
                     Spacer(minLength: 0)
                     TagChip(text: entry.stageTitle, color: stageColor(entry.stage))
                     Image(systemName: isPlaying ? "waveform" : "speaker.wave.fill")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(AppFont.subhead)
                         .foregroundColor(isPlaying ? .apexEmerald : .apexStarBlue)
                 }
                 Text(entry.meaning).font(AppFont.caption).foregroundColor(.secondary).lineLimit(2)

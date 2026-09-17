@@ -21,6 +21,8 @@ struct VocabDetailView: View {
             .padding(Spacing.lg).readableWidth()
         }
         .background(Color.apexBackground.ignoresSafeArea())
+        // 拼写输入完成后，滑动页面即可收起键盘，避免键盘长期占据半屏
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle(word.headword)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -89,7 +91,7 @@ struct VocabDetailView: View {
             }
             if quizRevealed {
                 Text(word.quizExplanation).font(AppFont.caption).foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true).padding(.top, 4)
+                    .fixedSize(horizontal: false, vertical: true).padding(.top, Spacing.xs)
             }
         }
         .cardSurface()

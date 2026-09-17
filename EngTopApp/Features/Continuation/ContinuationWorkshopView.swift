@@ -171,7 +171,7 @@ struct WorkshopDetailView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 4)
+        .padding(.vertical, Spacing.xs)
     }
 
     private func toggle(_ i: Int) {

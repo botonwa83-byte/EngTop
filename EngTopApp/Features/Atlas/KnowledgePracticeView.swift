@@ -28,7 +28,7 @@ struct KnowledgePracticeView: View {
             if allQuestions.isEmpty {
                 Spacer()
                 VStack(spacing: Spacing.md) {
-                    Image(systemName: "books.vertical").font(.system(size: 48)).foregroundColor(.apexGold)
+                    Image(systemName: "books.vertical").font(AppFont.heroNumber).foregroundColor(.apexGold)
                     Text("该知识点暂无固定练习").font(AppFont.sectionTitle)
                     Text("题库正在整理，请先选择已有题目的知识点。").font(AppFont.body).foregroundColor(.secondary).multilineTextAlignment(.center)
                 }.frame(maxWidth: .infinity)

@@ -277,6 +277,8 @@ struct LearningMissionView: View {
             .readableWidth()
         }
         .background(Color.apexBackground.ignoresSafeArea())
+        // 长文本输入（迁移写作）后，滑动页面即可收起键盘
+        .scrollDismissesKeyboard(.interactively)
         .navigationTitle("能力任务")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -360,7 +362,7 @@ struct LearningMissionView: View {
                 .fixedSize(horizontal: false, vertical: true)
             TextEditor(text: $transferText)
                 .frame(minHeight: 86)
-                .padding(6)
+                .padding(Spacing.sm)
                 .background(Color.apexBackground)
                 .cornerRadius(Radius.chip)
                 .overlay(RoundedRectangle(cornerRadius: Radius.chip).stroke(Color.secondary.opacity(0.15)))

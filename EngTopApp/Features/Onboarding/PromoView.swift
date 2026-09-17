@@ -50,28 +50,28 @@ struct PromoView: View {
                         Text("赋予学生一项能力：提分决策力")
                             .font(.system(size: 18, weight: .bold)).multilineTextAlignment(.center).foregroundColor(.white)
                         Text("把英语能力 150 分拆开建模，用算法导航\n知道每道题怎么想、先练什么、下一分在哪里")
-                            .font(.system(size: 13)).multilineTextAlignment(.center).foregroundColor(.white.opacity(0.6)).lineSpacing(4)
+                            .font(AppFont.footnote).multilineTextAlignment(.center).foregroundColor(.white.opacity(0.6)).lineSpacing(4)
                     }
-                    .padding(.top, 28).padding(.horizontal, 24)
+                    .padding(.top, Spacing.xxl).padding(.horizontal, Spacing.page)
 
                     VStack(spacing: 12) {
                         ForEach(Array(features.enumerated()), id: \.offset) { _, f in
                             HStack(spacing: 14) {
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 12).fill(f.color.opacity(0.20)).frame(width: 46, height: 46)
+                                    RoundedRectangle(cornerRadius: Radius.inner).fill(f.color.opacity(0.20)).frame(width: 46, height: 46)
                                     Image(systemName: f.icon).font(.system(size: 20, weight: .semibold)).foregroundColor(f.color)
                                 }
                                 VStack(alignment: .leading, spacing: 3) {
-                                    Text(f.title).font(.system(size: 16, weight: .bold)).foregroundColor(.white)
-                                    Text(f.desc).font(.system(size: 13)).foregroundColor(.white.opacity(0.65)).lineSpacing(2).fixedSize(horizontal: false, vertical: true)
+                                    Text(f.title).font(AppFont.bodyBold).foregroundColor(.white)
+                                    Text(f.desc).font(AppFont.footnote).foregroundColor(.white.opacity(0.65)).lineSpacing(2).fixedSize(horizontal: false, vertical: true)
                                 }
                                 Spacer(minLength: 0)
                             }
-                            .padding(14)
-                            .background(RoundedRectangle(cornerRadius: 16).fill(Color.white.opacity(0.06)))
+                            .padding(Spacing.field)
+                            .background(RoundedRectangle(cornerRadius: Radius.tile).fill(Color.white.opacity(0.06)))
                         }
                     }
-                    .padding(.top, 28).padding(.horizontal, 24)
+                    .padding(.top, Spacing.xxl).padding(.horizontal, Spacing.page)
 
                     HStack(spacing: 0) {
                         stat("\(MainLineData.levels.count)", "提分关卡")
@@ -80,9 +80,9 @@ struct PromoView: View {
                         statDivider
                         stat("\(PhraseBook.all.count)", "高分句式")
                     }
-                    .padding(.vertical, 18).padding(.horizontal, 24)
-                    .background(RoundedRectangle(cornerRadius: 16).fill(Color.white.opacity(0.05)))
-                    .padding(.top, 24).padding(.horizontal, 24)
+                    .padding(.vertical, 18).padding(.horizontal, Spacing.page)
+                    .background(RoundedRectangle(cornerRadius: Radius.tile).fill(Color.white.opacity(0.05)))
+                    .padding(.top, Spacing.page).padding(.horizontal, Spacing.page)
 
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 12) {
@@ -91,22 +91,22 @@ struct PromoView: View {
                                 Text("K").font(.system(size: 22, weight: .heavy)).foregroundColor(.white)
                             }
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("Top King").font(.system(size: 16, weight: .bold)).foregroundColor(.white)
-                                Text("独立开发者 / 教育科技探索者").font(.system(size: 12)).foregroundColor(.white.opacity(0.6))
+                                Text("Top King").font(AppFont.bodyBold).foregroundColor(.white)
+                                Text("独立开发者 / 教育科技探索者").font(AppFont.small).foregroundColor(.white.opacity(0.6))
                             }
                             Spacer()
                         }
                         Text("专注教育类 App，用科技让学习更高效。EngTop 把‘老师的提分直觉’做成算法——估分、雷达、错因诊断，让每一分钟都投在最该提分的地方。")
-                            .font(.system(size: 13)).foregroundColor(.white.opacity(0.65)).lineSpacing(3)
+                            .font(AppFont.footnote).foregroundColor(.white.opacity(0.65)).lineSpacing(3)
                     }
-                    .padding(16)
-                    .background(RoundedRectangle(cornerRadius: 16).fill(Color.white.opacity(0.06)))
-                    .padding(.top, 24).padding(.horizontal, 24)
+                    .padding(Spacing.lg)
+                    .background(RoundedRectangle(cornerRadius: Radius.tile).fill(Color.white.opacity(0.06)))
+                    .padding(.top, Spacing.page).padding(.horizontal, Spacing.page)
 
                     VStack(spacing: 4) {
-                        Text("学习能力闭环：识别考点 → 选择策略 → 输出答案 → 复盘提分").font(.system(size: 12)).foregroundColor(.apexEmerald)
-                        Text("EngTop · 英语登顶  v1.0.0").font(.system(size: 12)).foregroundColor(.white.opacity(0.5))
-                        Text("© 2026 Top King. All rights reserved.").font(.system(size: 11)).foregroundColor(.white.opacity(0.35))
+                        Text("学习能力闭环：识别考点 → 选择策略 → 输出答案 → 复盘提分").font(AppFont.small).foregroundColor(.apexEmerald)
+                        Text("EngTop · 英语登顶  v1.0.0").font(AppFont.small).foregroundColor(.white.opacity(0.5))
+                        Text("© 2026 Top King. All rights reserved.").font(AppFont.micro).foregroundColor(.white.opacity(0.35))
                     }
                     .padding(.top, 22).padding(.bottom, 120)
                 }
@@ -122,18 +122,19 @@ struct PromoView: View {
                         Image(systemName: "arrow.right")
                     }
                     .font(.system(size: 17, weight: .bold)).foregroundColor(.white)
-                    .frame(maxWidth: .infinity).padding(.vertical, 16)
+                    .frame(maxWidth: .infinity).padding(.vertical, Spacing.lg)
                     .background(LinearGradient(colors: [.apexStarBlue, .apexEmerald], startPoint: .leading, endPoint: .trailing),
-                                in: RoundedRectangle(cornerRadius: 16))
+                                in: RoundedRectangle(cornerRadius: Radius.tile))
                     .shadow(color: Color.apexStarBlue.opacity(0.45), radius: 14, y: 4)
                 }
-                .frame(maxWidth: 600 - 48).padding(.horizontal, 24).padding(.bottom, 20)
+                .frame(maxWidth: 600 - 48).padding(.horizontal, Spacing.page).padding(.bottom, Spacing.xl)
                 .background(
                     LinearGradient(colors: [Color(UIColor(hex6: 0x0A1018)).opacity(0), Color(UIColor(hex6: 0x0A1018))], startPoint: .top, endPoint: .bottom)
                         .frame(height: 120).allowsHitTesting(false), alignment: .bottom
                 )
             }
             .ignoresSafeArea(edges: .bottom)
+            skipButton
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.7)) { appeared = true }
@@ -144,12 +145,30 @@ struct PromoView: View {
     private func stat(_ n: String, _ label: String) -> some View {
         VStack(spacing: 4) {
             Text(n).font(.system(size: 24, weight: .heavy, design: .rounded)).foregroundColor(.apexEmerald)
-            Text(label).font(.system(size: 12)).foregroundColor(.white.opacity(0.6))
+            Text(label).font(AppFont.small).foregroundColor(.white.opacity(0.6))
         }
         .frame(maxWidth: .infinity)
     }
 
     private var statDivider: some View {
         Rectangle().fill(Color.white.opacity(0.2)).frame(width: 1, height: 30)
+    }
+
+    /// 引导页可跳过：不想看介绍的学生直接进入主界面。
+    private var skipButton: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button("跳过", action: onEnter)
+                    .font(AppFont.subhead)
+                    .foregroundColor(.white.opacity(0.85))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Capsule().fill(Color.white.opacity(0.14)))
+            }
+            .padding(.trailing, 20)
+            .padding(.top, Spacing.md)
+            Spacer()
+        }
     }
 }
