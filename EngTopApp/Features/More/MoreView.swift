@@ -94,21 +94,10 @@ struct MoreView: View {
                         .padding(.vertical, Spacing.xs)
                 }
 
-                Section("关于与协议") {
-                    Link(destination: EngLegal.termsURL) {
-                        Label("用户协议", systemImage: "doc.text")
-                    }
-                    Link(destination: EngLegal.privacyURL) {
-                        Label("隐私政策", systemImage: "hand.raised")
-                    }
-                    Link(destination: EngLegal.supportURL) {
-                        Label("技术支持", systemImage: "lifepreserver")
-                    }
-                }
-
                 Section {
-                    Text("英语登顶 EngTop　英语超能力训练器　v1.0.0")
-                        .font(AppFont.caption).foregroundColor(.secondary)
+                    EngAboutCard()
+                        .listRowInsets(EdgeInsets(top: Spacing.sm, leading: Spacing.lg, bottom: Spacing.lg, trailing: Spacing.lg))
+                        .listRowBackground(Color.clear)
                 }
             }
             .navigationTitle("更多")
