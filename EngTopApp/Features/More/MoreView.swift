@@ -107,7 +107,7 @@ struct MoreView: View {
                 }
 
                 Section {
-                    Text("EngTop · 英语登顶　英语超能力训练器　v1.0.0")
+                    Text("英语登顶 EngTop　英语超能力训练器　v1.0.0")
                         .font(AppFont.caption).foregroundColor(.secondary)
                 }
             }

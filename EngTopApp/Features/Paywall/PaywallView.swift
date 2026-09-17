@@ -28,6 +28,10 @@ struct PaywallView: View {
             VStack(spacing: 0) {
                 heroArea
 
+                EngMilkTeaPitchCard()
+                    .padding(.horizontal, Spacing.page)
+                    .padding(.top, Spacing.lg)
+
                 VStack(alignment: .leading, spacing: 14) {
                     Text("五大模块一次解锁").font(.headline).padding(.bottom, 2)
                     ForEach(PremiumModule.all) { module in
@@ -79,6 +83,10 @@ struct PaywallView: View {
                     Text(err).font(.caption).foregroundColor(.apexDanger)
                         .multilineTextAlignment(.center).padding(.horizontal, Spacing.page).padding(.top, 8)
                 }
+
+                EngFamilyAdSection(current: .eng)
+                    .padding(.horizontal, Spacing.page)
+                    .padding(.top, Spacing.lg)
 
                 Text("购买即视为同意[用户协议](https://botonwa83-byte.github.io/EngTop/terms.html)与[隐私政策](https://botonwa83-byte.github.io/EngTop/privacy.html)。付款通过 Apple 账户完成，换机后可在「恢复购买」找回。")
                     .font(.system(size: 10)).foregroundColor(.secondary)

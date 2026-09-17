@@ -144,7 +144,7 @@ struct DashboardView: View {
     private var welcomeHeader: some View {        HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("早上好，准备觉醒语感吗？").font(AppFont.cardTitle)
-                Text("EngTop · 每天 10 分钟，英语变成你的超能力").font(AppFont.caption).foregroundColor(.secondary)
+                Text("英语登顶 EngTop · 每天 10 分钟，英语变成你的超能力").font(AppFont.caption).foregroundColor(.secondary)
             }
             Spacer()
             ZStack {

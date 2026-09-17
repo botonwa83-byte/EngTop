@@ -78,6 +78,7 @@
 		CA2637583A8167C7560A38B8 /* JuniorKnowledge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14385F538D01A392873970E4 /* JuniorKnowledge.swift */; };
 		CB848592348828D8A3758155 /* ContinuationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE6487ABEC050363C0110AD /* ContinuationData.swift */; };
 		CEAECC2F96CE0E1AC0B6BBF3 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9153F8BD714EA0AB572B0 /* PaywallView.swift */; };
+		321E8BA16C2C477CB241071C /* EngFamilyAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FADFC70C6A458F95202066 /* EngFamilyAdView.swift */; };
 		D2C567CEB8AF77088C334560 /* MockEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93E2382C0EDCA6F0CC9ADBC /* MockEngine.swift */; };
 		D2CE5063A68B1E5201B9657D /* HighFreqData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29531CD3E12BAC37152DA91E /* HighFreqData.swift */; };
 		D349499B1AFFB32FD332CB01 /* QuestionBank+PassageDrill.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BC0076CFDC857BC082824D /* QuestionBank+PassageDrill.swift */; };
@@ -184,6 +185,7 @@
 		DD7773842CA68B84742DF516 /* WordPulsePromoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPulsePromoCard.swift; sourceTree = "<group>"; };
 		DD99FD0E26E52E50C59E700F /* KnowledgeProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnowledgeProgressStore.swift; sourceTree = "<group>"; };
 		DFE9153F8BD714EA0AB572B0 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		10FADFC70C6A458F95202066 /* EngFamilyAdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngFamilyAdView.swift; sourceTree = "<group>"; };
 		E071059675211D459873AA4A /* GravityChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravityChallengeView.swift; sourceTree = "<group>"; };
 		E3F5006B2DDE18F089442B12 /* LearningProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningProgressStore.swift; sourceTree = "<group>"; };
 		E546328EC20F6E414ED1B8EC /* EngTopAppTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = EngTopAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -343,6 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				DFE9153F8BD714EA0AB572B0 /* PaywallView.swift */,
+				10FADFC70C6A458F95202066 /* EngFamilyAdView.swift */,
 			);
 			path = Paywall;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 				770AB229E5C7A04909027B38 /* MockExamView.swift in Sources */,
 				FE4F792556F1EF094607D1A1 /* MoreView.swift in Sources */,
 				CEAECC2F96CE0E1AC0B6BBF3 /* PaywallView.swift in Sources */,
+				321E8BA16C2C477CB241071C /* EngFamilyAdView.swift in Sources */,
 				0EA49516BB5EC323D9DA925F /* PhraseBook.swift in Sources */,
 				86EED54F65B7B91169DCDC56 /* PromoView.swift in Sources */,
 				2EBE98D4B4E129F3662F5D2D /* PronounceButton.swift in Sources */,
@@ -742,7 +746,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "EngTop · 英语登顶";
+				INFOPLIST_KEY_CFBundleDisplayName = "英语登顶 EngTop";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -867,7 +871,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "EngTop · 英语登顶";
+				INFOPLIST_KEY_CFBundleDisplayName = "英语登顶 EngTop";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

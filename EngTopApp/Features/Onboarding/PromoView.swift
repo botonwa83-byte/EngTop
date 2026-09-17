@@ -8,6 +8,11 @@ struct PromoView: View {
 
     @State private var appeared = false
     @State private var glow = false
+    @ObservedObject private var purchase = PurchaseManager.shared
+    @State private var showPaywall = false
+
+    /// 价格以 ASC 为准；未加载出来时不编造数字，只留「一杯奶茶」的比喻。
+    private var priceLabel: String { purchase.product?.displayPrice ?? "（一杯奶茶）" }
 
     private let features: [(icon: String, color: Color, title: String, desc: String)] = [
         ("scope", .apexLava, "提分雷达 · 性价比导航", "算法算出你下一个 +5 分在哪，永远把最划算的提分点排在最前"),
@@ -103,9 +108,17 @@ struct PromoView: View {
                     .background(RoundedRectangle(cornerRadius: Radius.tile).fill(Color.white.opacity(0.06)))
                     .padding(.top, Spacing.page).padding(.horizontal, Spacing.page)
 
+                    EngFamilyAdSection(current: .eng, onDark: true)
+                        .padding(.top, Spacing.page).padding(.horizontal, Spacing.page)
+
+                    EngUnlockAskCard(price: priceLabel, onDark: true,
+                                     onUnlock: { showPaywall = true },
+                                     onBrowse: { onEnter() })
+                        .padding(.top, Spacing.lg).padding(.horizontal, Spacing.page)
+
                     VStack(spacing: 4) {
                         Text("学习能力闭环：识别考点 → 选择策略 → 输出答案 → 复盘提分").font(AppFont.small).foregroundColor(.apexEmerald)
-                        Text("EngTop · 英语登顶  v1.0.0").font(AppFont.small).foregroundColor(.white.opacity(0.5))
+                        Text("英语登顶 EngTop  v1.0.0").font(AppFont.small).foregroundColor(.white.opacity(0.5))
                         Text("© 2026 Top King. All rights reserved.").font(AppFont.micro).foregroundColor(.white.opacity(0.35))
                     }
                     .padding(.top, 22).padding(.bottom, 120)
@@ -135,6 +148,10 @@ struct PromoView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             skipButton
+        }
+        .sheet(isPresented: $showPaywall) { PaywallView() }
+        .onChange(of: purchase.isUnlocked) { unlocked in
+            if unlocked { onEnter() }
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.7)) { appeared = true }
