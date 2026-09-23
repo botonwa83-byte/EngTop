@@ -3,8 +3,8 @@ import SwiftUI
 
 // MARK: - 完整功能解锁 IAP（StoreKit 2 · 一次性买断）
 //
-// 产品 ID：com.engtopapp.app.full_unlock（¥22 一次性买断，价格在 App Store Connect 配置）
-// 注意：产品 ID 前缀必须与 App 的 bundle id（com.engtopapp.app）一致，否则 ASC 无法关联商品。
+// 产品 ID：com.engtop.app.full_unlock（¥22 一次性买断，价格在 App Store Connect 配置）
+// 注意：产品 ID 前缀必须与 App 的 bundle id（com.engtop.app）一致，否则 ASC 无法关联商品。
 // 免费档：主线前 3 关（语法填空 / 完形 / 七选五，含其全部题）+ 提分驾驶舱 / 估分器 / 提分雷达 /
 //        考点图谱 / 句式库 / 词汇专项 / 错题本 永久免费（习惯与转化钩子）；
 //        两个工坊每个体裁/主题第 1 个场景也免费预览（AppliedWritingPrompt/ContinuationPrompt.isFree）。
@@ -14,7 +14,7 @@ import SwiftUI
 final class PurchaseManager: ObservableObject {
     static let shared = PurchaseManager()
 
-    let productID = "com.engtopapp.app.full_unlock"
+    let productID = "com.engtop.app.full_unlock"
 
     /// 免费档：主线前 freeLevelCount 关免费，其余付费解锁。
     static let freeLevelCount = 3

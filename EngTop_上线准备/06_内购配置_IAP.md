@@ -5,14 +5,14 @@
 | 项 | 值 |
 |----|----|
 | 类型 | 非消耗型 / Non-Consumable |
-| 产品 ID | `com.engtopapp.app.full_unlock` |
+| 产品 ID | `com.engtop.app.full_unlock` |
 | 参考名称（Reference Name） | `EngTop Full Unlock` |
 | 显示名称（中文） | `完整版解锁` |
 | 价格 | ¥22 档位（以 ASC 实际价格档为准） |
 | 家庭共享 | 关闭 |
 | 审核截图 | 付费墙截图（建议 6.9" 一张） |
 
-> ⚠️ 本轮已把产品 ID 从 `com.engapex.app.full_unlock` 改为 `com.engtopapp.app.full_unlock`。ASC 中若已创建 engapex 商品，**不要复用**，必须在 EngTop 的 App 下新建本商品。
+> ⚠️ 本轮已把产品 ID 从 `com.engapex.app.full_unlock` 改为 `com.engtop.app.full_unlock`。ASC 中若已创建 engapex 商品，**不要复用**，必须在 EngTop 的 App 下新建本商品。
 
 ## 商品描述（ASC）
 
@@ -22,10 +22,10 @@
 
 | 位置 | 值 | 状态 |
 |------|----|------|
-| `EngTopApp/Core/Engine/PurchaseManager.swift` → `productID` | `com.engtopapp.app.full_unlock` | ✅ |
-| `EngTopApp.storekit` → `productID` | `com.engtopapp.app.full_unlock` | ✅ |
-| `project.yml` → `PRODUCT_BUNDLE_IDENTIFIER` | `com.engtopapp.app` | ✅ |
-| 产品 ID 前缀与 bundle id 一致 | `com.engtopapp.app.` | ✅ |
+| `EngTopApp/Core/Engine/PurchaseManager.swift` → `productID` | `com.engtop.app.full_unlock` | ✅ |
+| `EngTopApp.storekit` → `productID` | `com.engtop.app.full_unlock` | ✅ |
+| `project.yml` → `PRODUCT_BUNDLE_IDENTIFIER` | `com.engtop.app` | ✅ |
+| 产品 ID 前缀与 bundle id 一致 | `com.engtop.app.` | ✅ |
 | UserDefaults 购买缓存键 | `engtop_full_unlocked`（原 `engapex_full_unlocked`） | ✅ |
 
 ## 免费档划线（代码中的常量）

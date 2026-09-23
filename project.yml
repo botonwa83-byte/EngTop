@@ -1,6 +1,6 @@
 name: EngTopApp
 options:
-  bundleIdPrefix: com.engtopapp
+  bundleIdPrefix: com.engtop
   deploymentTarget:
     iOS: "16.0"
   createIntermediateGroups: true
@@ -42,7 +42,7 @@ targets:
       - path: EngTopApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.engtopapp.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.engtop.app
         PRODUCT_NAME: EngTopApp
         DEVELOPMENT_TEAM: Z7F8BY55DS
         GENERATE_INFOPLIST_FILE: YES

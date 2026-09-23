@@ -7,9 +7,9 @@ final class PurchasePolicyTests: XCTestCase {
 
     func testProductIDMatchesBundlePrefix() {
         let manager = PurchaseManager.shared
-        XCTAssertEqual(manager.productID, "com.engtopapp.app.full_unlock")
+        XCTAssertEqual(manager.productID, "com.engtop.app.full_unlock")
         XCTAssertTrue(
-            manager.productID.hasPrefix("com.engtopapp.app."),
+            manager.productID.hasPrefix("com.engtop.app."),
             "内购产品 ID 前缀必须与 App 的 bundle id 一致，否则 App Store Connect 无法关联商品"
         )
     }

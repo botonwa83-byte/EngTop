@@ -1,6 +1,6 @@
 # EngTop 上线准备包
 
-生成于 2026-09-17，对应版本 1.0.0(1)，Bundle ID `com.engtopapp.app`。
+生成于 2026-09-17，对应版本 1.0.0(1)，Bundle ID `com.engtop.app`。
 
 > 隐私政策 / 用户协议 / 技术支持正文统一放在仓库根目录 `docs/`（`docs/index.html`、`docs/privacy.html`、`docs/terms.html`、`docs/support.html`）。
 
@@ -19,7 +19,7 @@
 
 ## 本轮整改已完成的工程项
 
-- **品牌统一**：内购产品 ID `com.engapex.app.full_unlock` → `com.engtopapp.app.full_unlock`（与 bundle id 前缀一致，否则 ASC 无法关联商品）；storekit 参考名、`PromoView` 的「ENG APEX」、注释中的 EngApex 残留全部改为 EngTop。
+- **品牌统一**：内购产品 ID `com.engapex.app.full_unlock` → `com.engtop.app.full_unlock`（与 bundle id 前缀一致，否则 ASC 无法关联商品）；storekit 参考名、`PromoView` 的「ENG APEX」、注释中的 EngApex 残留全部改为 EngTop。
 - **Pages 链接修正**：原 `.../engapex/` 站点并不存在（404），已统一为 `https://botonwa83-byte.github.io/EngTop/`；`docs/` 四个页面按 EngTop 品牌重写。
 - **协议入口补齐**：新增 `EngLegal.swift` + `EngLegalLinksView`，付费墙底部与「更多」页「关于与协议」均可点击。
 - **隐私清单**：新增 `EngTopApp/Resources/PrivacyInfo.xcprivacy`（UserDefaults / CA92.1）。
@@ -27,7 +27,7 @@
 
 ## 提交前仍需人工完成
 
-1. ASC 创建内购 `com.engtopapp.app.full_unlock`（¥22，随版本提交）。
+1. ASC 创建内购 `com.engtop.app.full_unlock`（¥22，随版本提交）。
 2. 推送仓库后启用 Pages（`main /docs`），验证三个 URL 可访问（旧的 engapex 链接是死链）。
 3. 补齐 iPhone 6.9" 与 iPad 13" 截图。
 4. 实机走一遍内购：购买 / 恢复 / 取消 / 删除重装恢复。

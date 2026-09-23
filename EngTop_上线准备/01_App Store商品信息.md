@@ -1,6 +1,6 @@
 # EngTop — App Store 商品信息
 
-> 版本 1.0.0 · Bundle ID `com.engtopapp.app` · 分类：主要「教育」，次要「工具」
+> 版本 1.0.0 · Bundle ID `com.engtop.app` · 分类：主要「教育」，次要「工具」
 > 价格：免费下载 + 完整版 ¥22 一次性买断内购
 
 ## 名称（30 字符内）

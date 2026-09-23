@@ -764,7 +764,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.engtopapp.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.engtop.app;
 				PRODUCT_NAME = EngTopApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -781,7 +781,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.engtopapp.EngTopAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.engtop.EngTopAppTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EngTopApp.app/EngTopApp";
@@ -865,7 +865,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.engtopapp.EngTopAppTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.engtop.EngTopAppTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EngTopApp.app/EngTopApp";
@@ -890,7 +890,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.engtopapp.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.engtop.app;
 				PRODUCT_NAME = EngTopApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
