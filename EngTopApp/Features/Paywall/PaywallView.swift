@@ -33,7 +33,7 @@ struct PaywallView: View {
                     .padding(.top, Spacing.lg)
 
                 VStack(alignment: .leading, spacing: 14) {
-                    Text("五大模块一次解锁").font(.headline).padding(.bottom, 2)
+                    Text("七大模块一次解锁").font(.headline).padding(.bottom, 2)
                     ForEach(PremiumModule.all) { module in
                         benefitRow(icon: module.icon, color: .apexStarBlue, title: module.title, desc: module.pitch)
                     }
