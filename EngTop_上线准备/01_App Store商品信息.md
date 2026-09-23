@@ -1,11 +1,11 @@
-# 英语登顶 EngTop — App Store 商品信息
+# EngTop — App Store 商品信息
 
 > 版本 1.0.0 · Bundle ID `com.engtopapp.app` · 分类：主要「教育」，次要「工具」
 > 价格：免费下载 + 完整版 ¥22 一次性买断内购
 
 ## 名称（30 字符内）
 
-`英语登顶 EngTop`
+`EngTop`
 
 ## 副标题（30 字符内）
 
@@ -46,5 +46,5 @@ EngTop 不只告诉你错了，还告诉你分丢在哪、下一步先打哪一�
 
 ## 备注
 
-- 名称需与 App 内 `INFOPLIST_KEY_CFBundleDisplayName`（EngTopApp）一致；如需英文名可改 display name 为 `EngTop`。
-- 若 ASC 提示名称不可用，降级方案：`EngTop · 英语登顶`。
+- 2026-09-23 起名称统一为 `EngTop`：ASC 商品名与 App 内 `INFOPLIST_KEY_CFBundleDisplayName`（EngTop）一致，主屏图标下不再显示中文。
+- 若 ASC 提示名称不可用，降级方案：`EngTop App`。
